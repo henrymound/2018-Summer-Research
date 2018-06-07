@@ -10,47 +10,16 @@ import (
 	"time"
 )
 
+func reset() {
+	term.Sync() // cosmestic purpose
+}
+
 var forwardPressed = false
 var backwardPressed = false
 var leftPressed = false
 var rightPressed = false
 var upPressed = false
 var downPressed = false
-
-func reset() {
-	term.Sync() // cosmestic purpose
-}
-
-func checkKeys() {
-	switch ev := term.PollEvent(); ev.Type {
-	case term.EventKey:
-		switch ev.Key {
-		case term.KeyEsc:
-			loopBool = false
-		case term.KeyF1:
-			fmt.Println("F1")
-		case term.KeyArrowUp:
-			fmt.Println("Arrow Up pressed")
-		case term.KeyArrowDown:
-			fmt.Println("Arrow Down pressed")
-		case term.KeyArrowLeft:
-			fmt.Println("Arrow Left pressed")
-		case term.KeyArrowRight:
-			fmt.Println("Arrow Right pressed")
-		case term.KeySpace:
-			fmt.Println("Space pressed")
-		case term.KeyBackspace:
-			fmt.Println("Backspace pressed")
-		case term.KeyEnter:
-			fmt.Println("Enter pressed")
-		default:
-			// we only want to read a single character or one key pressed event
-			fmt.Println("ASCII : ", ev.Ch)
-		}
-	case term.EventError:
-		panic(ev.Err)
-	}
-}
 
 func main() {
 
@@ -70,7 +39,6 @@ func main() {
 			drone.SetVideoEncoderRate(5)
 			gobot.Every(100*time.Millisecond, func() {
 				drone.StartVideo()
-				checkKeys()
 			})
 		})
 
@@ -82,12 +50,126 @@ func main() {
 		})
 	}
 
-	//Run the main control
-
 	gobot.After(5*time.Second, func() {
 		drone.TakeOff()
 		fmt.Println("Take Off")
+		loopBool := true
+		fmt.Println("Enter any key to see their ASCII code or press ESC button to quit")
 
+		err := term.Init()
+		if err != nil {
+			panic(err)
+		}
+
+		defer term.Close()
+
+		for loopBool {
+			switch ev := term.PollEvent(); ev.Type {
+			case term.EventKey:
+				switch ev.Key {
+				case term.KeyEsc:
+					loopBool = false
+				case term.KeyArrowUp: // Move drone forward
+					//fmt.Println("Up")
+					forwardPressed = true
+					backwardPressed = false
+				case term.KeyArrowDown: // Move drone backward
+					//fmt.Println("Down")
+					backwardPressed = true
+					forwardPressed = false
+				case term.KeyArrowLeft: // Move drone left
+					//fmt.Println("Left")
+					leftPressed = true
+					rightPressed = false
+				case term.KeyArrowRight: // Move drone right
+					//fmt.Println("Right")
+					rightPressed = true
+					leftPressed = false
+				case term.KeySpace: // Move drone up
+					//fmt.Println("Space")
+					upPressed = true
+					downPressed = false
+				case term.KeyF1: // Move drone down
+					//fmt.Println("Backspace")
+					downPressed = true
+					upPressed = false
+				case term.KeyEnter:
+					//fmt.Println("Enter") // Stop drone movement
+					upPressed = false
+					downPressed = false
+					forwardPressed = false
+					backwardPressed = false
+					leftPressed = false
+					rightPressed = false
+				case term.KeyTab: // Land drone
+					fmt.Println("Landing...")
+					drone.Land()
+					os.Exit(3)
+				default:
+					// we only want to read a single character or one key pressed event
+					fmt.Println("ASCII : ", ev.Ch)
+				}
+
+				// Move drone based on boolean values
+				if forwardPressed{
+					drone.Forward(100)
+					fmt.Println("Forward")
+				}else{
+					drone.Forward(0)
+				}
+
+				if backwardPressed{
+					drone.Backward(100)
+					fmt.Println("Backward")
+				}else{
+					drone.Backward(0)
+				}
+
+				if leftPressed{
+					drone.Left(100)
+					fmt.Println("Left")
+				}else{
+					drone.Left(0)
+				}
+
+				if rightPressed{
+					drone.Right(100)
+					fmt.Println("Right")
+				}else{
+					drone.Right(0)
+				}
+
+				if upPressed{
+					drone.Up(100)
+					fmt.Println("Up")
+				}else{
+					drone.Up(0)
+				}
+
+				if downPressed{
+					drone.Down(100)
+					fmt.Println("Down")
+				}else{
+					drone.Down(0)
+				}
+
+				if !downPressed &&
+						!upPressed &&
+						!forwardPressed &&
+						!backwardPressed &&
+						!leftPressed &&
+						!rightPressed{
+							print("Halt")
+						}
+
+
+			case term.EventError:
+				panic(ev.Err)
+
+
+
+			}
+		}
 	})
 
 	robot := gobot.NewRobot("tello",

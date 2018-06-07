@@ -14,6 +14,13 @@ func reset() {
 	term.Sync() // cosmestic purpose
 }
 
+var forwardPressed = false
+var backwardPressed = false
+var leftPressed = false
+var rightPressed = false
+var upPressed = false
+var downPressed = false
+
 func main() {
 
 	drone := tello.NewDriver("0000")
@@ -39,7 +46,7 @@ func main() {
         drone.Clockwise(0)
         drone.CounterClockwise(0)
         drone.Up(0)
-        drone.Down(0)    
+        drone.Down(0)
 			})
 		})
 
