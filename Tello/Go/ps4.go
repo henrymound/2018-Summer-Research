@@ -7,6 +7,7 @@ import (
 	"gobot.io/x/gobot/platforms/dji/tello"
 	"os"
 	"os/exec"
+	"strconv"
 	"time"
 )
 
@@ -14,12 +15,16 @@ func reset() {
 	term.Sync() // cosmestic purpose
 }
 
-var forwardPressed = false
-var backwardPressed = false
-var leftPressed = false
-var rightPressed = false
-var upPressed = false
-var downPressed = false
+var GLOBAL_SPEED = 100
+
+var forward = 0
+var backward = 0
+var left = 0
+var right = 0
+var up = 0
+var down = 0
+var clockwise = 0
+var counterclockwise = 0
 
 func main() {
 
@@ -70,103 +75,162 @@ func main() {
 				case term.KeyEsc:
 					loopBool = false
 				case term.KeyArrowUp: // Move drone forward
-					//fmt.Println("Up")
-					forwardPressed = true
-					backwardPressed = false
+					//fmt.Println("Forward")
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 0
+					forward = GLOBAL_SPEED
 				case term.KeyArrowDown: // Move drone backward
-					//fmt.Println("Down")
-					backwardPressed = true
-					forwardPressed = false
+					//fmt.Println("Backward")
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 0
+					backward = GLOBAL_SPEED
 				case term.KeyArrowLeft: // Move drone left
 					//fmt.Println("Left")
-					leftPressed = true
-					rightPressed = false
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 0
+					left = GLOBAL_SPEED
 				case term.KeyArrowRight: // Move drone right
 					//fmt.Println("Right")
-					rightPressed = true
-					leftPressed = false
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					right = GLOBAL_SPEED
 				case term.KeySpace: // Move drone up
-					//fmt.Println("Space")
-					upPressed = true
-					downPressed = false
+					//fmt.Println("Up")
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 0
+					up = GLOBAL_SPEED
 				case term.KeyF1: // Move drone down
-					//fmt.Println("Backspace")
-					downPressed = true
-					upPressed = false
+					//fmt.Println("Down")
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 0
+					down = GLOBAL_SPEED
 				case term.KeyEnter:
-					//fmt.Println("Enter") // Stop drone movement
-					upPressed = false
-					downPressed = false
-					forwardPressed = false
-					backwardPressed = false
-					leftPressed = false
-					rightPressed = false
+					fmt.Println("Halt") // Stop drone movement
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 0
+					drone.Forward(forward)
+					drone.Backward(backward)
+					drone.Left(left)
+					drone.Right(right)
+					drone.Up(up)
+					drone.Down(down)
+					drone.Clockwise(clockwise)
+					drone.CounterClockwise(counterclockwise)
 				case term.KeyTab: // Land drone
-					fmt.Println("Landing...")
+					fmt.Println("Halting and Landing...")
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 0
+					loopBool = false
 					drone.Land()
 					os.Exit(3)
+				case term.KeyF2: // Rotate drone clockwise
+					//fmt.Println("Down")
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 100
+					counterclockwise = 0
+				case term.KeyF3: // Rotate drone counterclockwise
+					//fmt.Println("Down")
+					up = 0
+					down = 0
+					forward = 0
+					backward = 0
+					left = 0
+					right = 0
+					clockwise = 0
+					counterclockwise = 100
 				default:
 					// we only want to read a single character or one key pressed event
 					fmt.Println("ASCII : ", ev.Ch)
 				}
 
-				// Move drone based on boolean values
-				if forwardPressed{
-					drone.Forward(100)
-					fmt.Println("Forward")
-				}else{
-					drone.Forward(0)
+				reset() // Clear terminal
+				fmt.Println("Forward: " + strconv.Itoa(forward))
+				fmt.Println("Backward: " + strconv.Itoa(backward))
+				fmt.Println("Left: " + strconv.Itoa(left))
+				fmt.Println("Right: " + strconv.Itoa(right))
+				fmt.Println("Up: " + strconv.Itoa(up))
+				fmt.Println("Down: " + strconv.Itoa(down))
+				fmt.Println("Clockwise: " + strconv.Itoa(clockwise))
+				fmt.Println("CounterClockwise: " + strconv.Itoa(counterclockwise))
+
+				if forward != 0{
+					drone.Forward(forward)
 				}
-
-				if backwardPressed{
-					drone.Backward(100)
-					fmt.Println("Backward")
-				}else{
-					drone.Backward(0)
+				if backward != 0{
+					drone.Backward(backward)
 				}
-
-				if leftPressed{
-					drone.Left(100)
-					fmt.Println("Left")
-				}else{
-					drone.Left(0)
+				if left != 0{
+					drone.Left(left)
 				}
-
-				if rightPressed{
-					drone.Right(100)
-					fmt.Println("Right")
-				}else{
-					drone.Right(0)
+				if right != 0{
+					drone.Right(right)
 				}
-
-				if upPressed{
-					drone.Up(100)
-					fmt.Println("Up")
-				}else{
-					drone.Up(0)
+				if up != 0{
+					drone.Up(up)
 				}
-
-				if downPressed{
-					drone.Down(100)
-					fmt.Println("Down")
-				}else{
-					drone.Down(0)
+				if down != 0{
+					drone.Down(down)
 				}
-
-				if !downPressed &&
-						!upPressed &&
-						!forwardPressed &&
-						!backwardPressed &&
-						!leftPressed &&
-						!rightPressed{
-							print("Halt")
-						}
-
+				if clockwise != 0{
+					drone.Clockwise(clockwise)
+				}
+				if counterclockwise != 0{
+					drone.CounterClockwise(counterclockwise)
+				}
 
 			case term.EventError:
 				panic(ev.Err)
-
-
 
 			}
 		}
