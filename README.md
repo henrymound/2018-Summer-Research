@@ -9,7 +9,7 @@
 **TakeoffAndLand.go**: Establishes a video connection and performs a simple takeoff and landing.
 
 
-**control.go**: Gives full drone control via keyboard input commands. The controls are as follows:
+**control.go**: Gives full drone control via keyboard input commands. Each command must be typed via the command line followed by pressing enter. The controls are as follows:
   - **(m) Move**
     - ```(u) Up```
     - ```(d) Down```
