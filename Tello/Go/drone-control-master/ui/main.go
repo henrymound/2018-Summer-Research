@@ -5,7 +5,7 @@ import (
 	"log"
 	"image"
 	"github.com/hajimehoshi/ebiten/inpututil"
-	"github.com/socketbind/drone-control/drone"
+	"../drone"
 	"math"
 )
 
@@ -41,7 +41,7 @@ func Start(videoChannel chan *image.Image, commandChannel chan interface{}) {
 
 	update := func (screen *ebiten.Image) error {
 		for _, id := range inpututil.JustConnectedGamepadIDs() {
-			log.Printf("gamepad connected: id: %d", id)
+			log.Printf("gamepads connected: id: %d", id)
 		}
 
 		ids := ebiten.GamepadIDs()
@@ -51,7 +51,7 @@ func Start(videoChannel chan *image.Image, commandChannel chan interface{}) {
 			axis0 := ebiten.GamepadAxis(id, 0)
 			axis1 := ebiten.GamepadAxis(id, 1)
 
-			rotation := remapAxisInput(axis0, deadZoneHorizontal, 30)
+			rotation := remapAxisInput(axis0, deadZoneHorizontal, 100)
 			if rotation != 0 {
 				if rotation < 0 {
 					commandChannel <- drone.RotateCounterClockwiseCommand{-rotation}
@@ -60,7 +60,7 @@ func Start(videoChannel chan *image.Image, commandChannel chan interface{}) {
 				}
 			}
 
-			altitude := remapAxisInput(axis1, deadZoneVertical, 30)
+			altitude := remapAxisInput(axis1, deadZoneVertical, 100)
 			if altitude != 0 {
 				if altitude < 0 {
 					commandChannel <- drone.UpCommand{-altitude}
@@ -72,7 +72,7 @@ func Start(videoChannel chan *image.Image, commandChannel chan interface{}) {
 			axis2 := ebiten.GamepadAxis(id, 2)
 			axis3 := ebiten.GamepadAxis(id, 3)
 
-			horizontalMovement := remapAxisInput(axis2, deadZoneHorizontal, 20)
+			horizontalMovement := remapAxisInput(axis2, deadZoneHorizontal, 100)
 			if horizontalMovement != 0 {
 				if horizontalMovement < 0 {
 					commandChannel <- drone.LeftCommand{-horizontalMovement}
@@ -81,7 +81,7 @@ func Start(videoChannel chan *image.Image, commandChannel chan interface{}) {
 				}
 			}
 
-			verticalMovement := remapAxisInput(axis3, deadZoneVertical, 20)
+			verticalMovement := remapAxisInput(axis3, deadZoneVertical, 100)
 			if verticalMovement != 0 {
 				if verticalMovement < 0 {
 					commandChannel <- drone.ForwardCommand{-verticalMovement}

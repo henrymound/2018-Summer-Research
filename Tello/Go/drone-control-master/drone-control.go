@@ -2,10 +2,10 @@ package main
 
 import (
 	"log"
-	"github.com/socketbind/drone-control/drone"
+	"./drone"
 	"image"
-	"github.com/socketbind/drone-control/decoder"
-	"github.com/socketbind/drone-control/ui"
+	"./decoder"
+	"./ui"
 )
 
 var videoChannel = make(chan *image.Image)

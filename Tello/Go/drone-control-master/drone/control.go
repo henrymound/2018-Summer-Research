@@ -7,7 +7,7 @@ import (
 	"image"
 	"fmt"
 	"time"
-	"github.com/socketbind/drone-control/decoder"
+	"../decoder"
 	"os"
 )
 
@@ -106,4 +106,3 @@ func DroneControl(videoChannel chan *image.Image, commandChannel chan interface{
 
 	robot.Start()
 }
-
