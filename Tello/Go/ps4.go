@@ -9,6 +9,9 @@ import (
 	"os/exec"
 	"strconv"
 	"time"
+	"image"
+  "image/png"
+	"bytes"
 )
 
 func reset() {
@@ -49,6 +52,8 @@ func main() {
 
 		drone.On(tello.VideoFrameEvent, func(data interface{}) {
 			pkt := data.([]byte)
+
+
 			if _, err := mplayerIn.Write(pkt); err != nil {
 				fmt.Println(err)
 			}
