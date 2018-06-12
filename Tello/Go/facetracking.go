@@ -20,8 +20,9 @@ import (
 
 const maxJoyVal = 32768
 const frameSize = frameX * frameY * 3
-const frameX = 400
-const frameY = 300
+const frameX = 250
+const frameY = 150
+const scaleSpeed = 1
 
 var drone = tello.NewDriver("8890")
 var window = gocv.NewWindow("Tello")
@@ -55,7 +56,7 @@ func init() {
 			drone.StartVideo()
 			drone.SetVideoEncoderRate(tello.VideoBitRateAuto)
 			drone.SetExposure(0)
-			gobot.Every(100*time.Millisecond, func() {
+			gobot.Every(50*time.Millisecond, func() {
 				drone.StartVideo()
 			})
 		})
@@ -170,31 +171,31 @@ func main() {
 		distance := dist(left, top, right, bottom)
 
 		if right < W/2 {
-			drone.CounterClockwise(10)
-			print("CounterClockwise 10\n")
+			drone.CounterClockwise(22 * scaleSpeed)
+			print("CounterClockwise\n")
 		} else if left > W/2 {
-			drone.Clockwise(10)
-			print("Clockwise 10\n")
+			drone.Clockwise(22 * scaleSpeed)
+			print("Clockwise\n")
 		} else {
 			drone.Clockwise(0)
 		}
 
 		if top < H/10 {
-			drone.Up(10)
-			print("Up 10\n")
+			drone.Up(20 * scaleSpeed)
+			print("Up\n")
 		} else if bottom > H-H/10 {
-			drone.Down(10)
-			print("Down 10\n")
+			drone.Down(20 * scaleSpeed)
+			print("Down\n")
 		} else {
 			drone.Up(0)
 		}
 
 		if distance < refDistance-distTolerance {
-			drone.Forward(10)
-			print("Forward 10\n")
+			drone.Forward(20 * scaleSpeed)
+			print("Forward\n")
 		} else if distance > refDistance+distTolerance {
-			drone.Backward(10)
-			print("Backward 10\n")
+			drone.Backward(20* scaleSpeed)
+			print("Backward\n")
 		} else {
 			drone.Forward(0)
 		}
@@ -247,17 +248,19 @@ func handleJoystick() {
 	stick.On(joystick.RightY, func(data interface{}) {
 		val := float64(data.(int16))
 		if val >= 0 {
-			drone.Backward(tello.ValidatePitch(val, maxJoyVal))
+			//drone.Backward(tello.ValidatePitch(val, maxJoyVal))
+			///print("Forward")
 		} else {
-			drone.Forward(tello.ValidatePitch(val, maxJoyVal))
+			//drone.Forward(tello.ValidatePitch(val, maxJoyVal))
+			//print("Backward")
 		}
 	})
 	stick.On(joystick.RightX, func(data interface{}) {
 		val := float64(data.(int16))
 		if val >= 0 {
-			drone.Right(tello.ValidatePitch(val, maxJoyVal))
+			//drone.Right(tello.ValidatePitch(val, maxJoyVal))
 		} else {
-			drone.Left(tello.ValidatePitch(val, maxJoyVal))
+			//drone.Left(tello.ValidatePitch(val, maxJoyVal))
 		}
 	})
 	stick.On(joystick.LeftY, func(data interface{}) {
