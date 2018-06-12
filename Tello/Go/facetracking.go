@@ -115,7 +115,7 @@ func main() {
 			fmt.Println(err)
 			continue
 		}
-		img := gocv.NewMatFromBytes(frameY, frameX, gocv.MatTypeCV8UC3, buf)
+		img, _ := gocv.NewMatFromBytes(frameY, frameX, gocv.MatTypeCV8UC3, buf)
 		if img.Empty() {
 			continue
 		}
@@ -170,25 +170,31 @@ func main() {
 		distance := dist(left, top, right, bottom)
 
 		if right < W/2 {
-			drone.CounterClockwise(50)
+			drone.CounterClockwise(10)
+			print("CounterClockwise 10\n")
 		} else if left > W/2 {
-			drone.Clockwise(50)
+			drone.Clockwise(10)
+			print("Clockwise 10\n")
 		} else {
 			drone.Clockwise(0)
 		}
 
 		if top < H/10 {
-			drone.Up(25)
+			drone.Up(10)
+			print("Up 10\n")
 		} else if bottom > H-H/10 {
-			drone.Down(25)
+			drone.Down(10)
+			print("Down 10\n")
 		} else {
 			drone.Up(0)
 		}
 
 		if distance < refDistance-distTolerance {
-			drone.Forward(20)
+			drone.Forward(10)
+			print("Forward 10\n")
 		} else if distance > refDistance+distTolerance {
-			drone.Backward(20)
+			drone.Backward(10)
+			print("Backward 10\n")
 		} else {
 			drone.Forward(0)
 		}
