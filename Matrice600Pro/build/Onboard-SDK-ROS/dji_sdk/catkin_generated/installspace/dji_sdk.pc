@@ -1,0 +1,8 @@
+prefix=/home/henry/Documents/SummerResearch2018/Matrice600Pro/install
+
+Name: dji_sdk
+Description: Description of dji_sdk
+Version: 3.2.0
+Cflags: -I/home/henry/Documents/SummerResearch2018/Matrice600Pro/install/include
+Libs: -L/home/henry/Documents/SummerResearch2018/Matrice600Pro/install/lib 
+Requires: message_runtime geometry_msgs nav_msgs std_msgs

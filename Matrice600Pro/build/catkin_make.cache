@@ -1,0 +1,2 @@
+Onboard-SDK-ROS/dji_sdk:Onboard-SDK-ROS/dji_sdk_demo
+-DCATKIN_DEVEL_PREFIX=/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel -DCMAKE_INSTALL_PREFIX=/home/henry/Documents/SummerResearch2018/Matrice600Pro/install -G Unix Makefiles

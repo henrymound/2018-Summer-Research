@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/dji_sdk_generate_messages_nodejs"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/WaypointList.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/MissionWaypoint.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/MissionHotpointTask.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/MissionWaypointAction.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/MobileData.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/Waypoint.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/Gimbal.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/msg/MissionWaypointTask.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/SendMobileData.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionHpResetYaw.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/QueryDroneVersion.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MFIOConfig.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/CameraAction.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/SetupCameraStream.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/StereoVGASubscription.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MFIOSetValue.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionWpGetInfo.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/SDKControlAuthority.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/SetLocalPosRef.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/Activation.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionStatus.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/DroneArmControl.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionWpAction.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionWpUpload.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionHpUpload.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionHpUpdateYawRate.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/Stereo240pSubscription.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionWpGetSpeed.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionHpAction.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/SetHardSync.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/DroneTaskControl.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionWpSetSpeed.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionHpGetInfo.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/StereoDepthSubscription.js"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/share/gennodejs/ros/dji_sdk/srv/MissionHpUpdateRadius.js"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang )
+  include(CMakeFiles/dji_sdk_generate_messages_nodejs.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/dji_sdk_generate_messages_cpp"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/WaypointList.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWaypoint.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionHotpointTask.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWaypointAction.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MobileData.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/Waypoint.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/Gimbal.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWaypointTask.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/SendMobileData.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionHpResetYaw.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/QueryDroneVersion.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MFIOConfig.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/CameraAction.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/SetupCameraStream.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/StereoVGASubscription.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MFIOSetValue.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWpGetInfo.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/SDKControlAuthority.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/SetLocalPosRef.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/Activation.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionStatus.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/DroneArmControl.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWpAction.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWpUpload.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionHpUpload.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionHpUpdateYawRate.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/Stereo240pSubscription.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWpGetSpeed.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionHpAction.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/SetHardSync.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/DroneTaskControl.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionWpSetSpeed.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionHpGetInfo.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/StereoDepthSubscription.h"
+  "/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/include/dji_sdk/MissionHpUpdateRadius.h"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang )
+  include(CMakeFiles/dji_sdk_generate_messages_cpp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

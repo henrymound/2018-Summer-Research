@@ -1,0 +1,8 @@
+prefix=/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel
+
+Name: dji_sdk_demo
+Description: Description of dji_sdk_demo
+Version: 0.1.9
+Cflags: 
+Libs: -L/home/henry/Documents/SummerResearch2018/Matrice600Pro/devel/lib 
+Requires: 
