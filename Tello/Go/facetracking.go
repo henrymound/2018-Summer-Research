@@ -171,31 +171,49 @@ func main() {
 		distance := dist(left, top, right, bottom)
 
 		if right < W/2 {
-			drone.CounterClockwise(22 * scaleSpeed)
-			print("CounterClockwise\n")
+			//Delay by 500 ms
+			gobot.After(500*time.Millisecond, func() {
+				drone.CounterClockwise(22 * scaleSpeed)
+				print("CounterClockwise\n")
+			})
 		} else if left > W/2 {
-			drone.Clockwise(22 * scaleSpeed)
-			print("Clockwise\n")
+			//Delay by 500 ms
+			gobot.After(500*time.Millisecond, func() {
+				drone.Clockwise(22 * scaleSpeed)
+				print("Clockwise\n")
+			})
 		} else {
 			drone.Clockwise(0)
 		}
 
 		if top < H/10 {
-			drone.Up(20 * scaleSpeed)
-			print("Up\n")
+			//Delay by 500 ms
+			gobot.After(500*time.Millisecond, func() {
+				drone.Up(20 * scaleSpeed)
+				print("Up\n")
+			})
 		} else if bottom > H-H/10 {
-			drone.Down(20 * scaleSpeed)
-			print("Down\n")
+			//Delay by 500 ms
+			gobot.After(500*time.Millisecond, func() {
+				drone.Down(20 * scaleSpeed)
+				print("Down\n")
+			})
 		} else {
 			drone.Up(0)
 		}
 
 		if distance < refDistance-distTolerance {
-			drone.Forward(20 * scaleSpeed)
-			print("Forward\n")
+			//Delay by 500 ms
+			gobot.After(500*time.Millisecond, func() {
+				drone.Forward(20 * scaleSpeed)
+				print("Forward\n")
+			})
 		} else if distance > refDistance+distTolerance {
-			drone.Backward(20* scaleSpeed)
-			print("Backward\n")
+			//Delay by 500 ms
+			gobot.After(500*time.Millisecond, func() {
+				drone.Backward(20* scaleSpeed)
+				print("Backward\n")
+			})
 		} else {
 			drone.Forward(0)
 		}
