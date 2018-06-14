@@ -20,8 +20,8 @@ import (
 
 const maxJoyVal = 32768
 const frameSize = frameX * frameY * 3
-const frameX = 250
-const frameY = 150
+const frameX = 500
+const frameY = 300
 const scaleSpeed = 1
 
 var drone = tello.NewDriver("8890")
@@ -56,7 +56,7 @@ func init() {
 			drone.StartVideo()
 			drone.SetVideoEncoderRate(tello.VideoBitRateAuto)
 			drone.SetExposure(0)
-			gobot.Every(50*time.Millisecond, func() {
+			gobot.Every(100*time.Millisecond, func() {
 				drone.StartVideo()
 			})
 		})
@@ -171,49 +171,37 @@ func main() {
 		distance := dist(left, top, right, bottom)
 
 		if right < W/2 {
+			drone.CounterClockwise(22 * scaleSpeed)
 			//Delay by 500 ms
-			gobot.After(500*time.Millisecond, func() {
-				drone.CounterClockwise(22 * scaleSpeed)
-				print("CounterClockwise\n")
-			})
+	
 		} else if left > W/2 {
 			//Delay by 500 ms
-			gobot.After(500*time.Millisecond, func() {
-				drone.Clockwise(22 * scaleSpeed)
-				print("Clockwise\n")
-			})
+			drone.Clockwise(22 * scaleSpeed)
+
 		} else {
 			drone.Clockwise(0)
 		}
 
 		if top < H/10 {
 			//Delay by 500 ms
-			gobot.After(500*time.Millisecond, func() {
-				drone.Up(20 * scaleSpeed)
-				print("Up\n")
-			})
+			drone.Up(20 * scaleSpeed)
+
 		} else if bottom > H-H/10 {
 			//Delay by 500 ms
-			gobot.After(500*time.Millisecond, func() {
-				drone.Down(20 * scaleSpeed)
-				print("Down\n")
-			})
+			drone.Down(20 * scaleSpeed)
+
 		} else {
 			drone.Up(0)
 		}
 
 		if distance < refDistance-distTolerance {
 			//Delay by 500 ms
-			gobot.After(500*time.Millisecond, func() {
-				drone.Forward(20 * scaleSpeed)
-				print("Forward\n")
-			})
+			drone.Forward(20 * scaleSpeed)
+
 		} else if distance > refDistance+distTolerance {
 			//Delay by 500 ms
-			gobot.After(500*time.Millisecond, func() {
-				drone.Backward(20* scaleSpeed)
-				print("Backward\n")
-			})
+			drone.Backward(20 * scaleSpeed)
+
 		} else {
 			drone.Forward(0)
 		}
