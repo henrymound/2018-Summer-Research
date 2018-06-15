@@ -44,6 +44,10 @@ func DroneControl(videoChannel chan *image.Image, commandChannel chan interface{
 
 			// dump NALs
 			_, err := f.Write(pkt)
+
+			// Execute python
+			//cmd := exec.XommandContext(r.context(), "")
+
 			if err != nil {
 				panic("Unable to write recording")
 			}
