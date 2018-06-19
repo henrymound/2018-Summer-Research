@@ -8,7 +8,7 @@ import pygame
 import pygame.locals
 import time
 #import video
-from common import anorm2, draw_str
+from lib.common import anorm2, draw_str
 from time import clock
 import threading
 
