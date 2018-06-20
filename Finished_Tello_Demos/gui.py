@@ -14,6 +14,14 @@ from PIL import Image, ImageTk
 
 videoLabel = None
 mainFrame = None
+typeOfVideo = None
+
+forwardLabel = None
+backwardLabel = None
+upLabel = None
+downLabel = None
+leftLabel = None
+rightLabel = None
 
 ###################################################
 
@@ -200,6 +208,19 @@ def checkController():
     global roll
     global drone
 
+    global forwardLabel
+    global backwardLabel
+    global upLabel
+    global downLabel
+    global leftLabel
+    global rightLabel
+    global clockwiseLabel
+    global counterclockwiseLabel
+    global pitchLabel
+    global yawLabel
+    global throttleLabel
+    global rollLabel
+
     for e in pygame.event.get():
         if e.type == pygame.locals.JOYAXISMOTION:
             # ignore small input values (Deadzone)
@@ -209,81 +230,120 @@ def checkController():
                 throttle = update(
                     throttle, e.value * buttons.LEFT_Y_REVERSE)
                 drone.set_throttle(throttle)
+                throttleLabel.configure(text="Throttle: " + str("%.2f" % throttle))
+                throttleLabel.update()
             if e.axis == buttons.LEFT_X:
                 yaw = update(yaw, e.value * buttons.LEFT_X_REVERSE)
                 drone.set_yaw(yaw)
+                yawLabel.configure(text="Yaw: " + str("%.2f" % yaw))
+                yawLabel.update()
             if e.axis == buttons.RIGHT_Y:
                 pitch = update(pitch, e.value *
                                buttons.RIGHT_Y_REVERSE)
                 drone.set_pitch(pitch)
+                pitchLabel.configure(text="Pitch: " + str("%.2f" % pitch))
+                pitchLabel.update()
             if e.axis == buttons.RIGHT_X:
                 roll = update(roll, e.value * buttons.RIGHT_X_REVERSE)
                 drone.set_roll(roll)
+                rollLabel.configure(text="Roll: " + str("%.2f" % roll))
+                rollLabel.update()
 
         elif e.type == pygame.locals.JOYHATMOTION:
             if e.value[0] < 0:
                 drone.counter_clockwise(speed)
-                print("cc")
+                counterclockwiseLabel.configure(text="Counterclockwise: " + str(speed))
+                counterclockwiseLabel.update()
             if e.value[0] == 0:
                 drone.clockwise(0)
+                clockwiseLabel.configure(text="Clockwise: " + str(0))
+                clockwiseLabel.update()
             if e.value[0] > 0:
                 drone.clockwise(speed)
-                print("c")
+                clockwiseLabel.configure(text="Clockwise: " + str(speed))
+                clockwiseLabel.update()
             if e.value[1] < 0:
                 drone.down(speed)
+                downLabel.configure(text="Down: " + str(speed))
+                downLabel.update()
             if e.value[1] == 0:
                 drone.up(0)
+                upLabel.configure(text="Up: " + str(0))
+                upLabel.update()
             if e.value[1] > 0:
                 drone.up(speed)
-                print("up")
+                upLabel.configure(text="Up: " + str(speed))
+                upLabel.update()
         elif e.type == pygame.locals.JOYBUTTONDOWN:
             if e.button == buttons.LAND:
                 drone.land()
-                print("land")
             elif e.button == buttons.UP:
                 drone.up(speed)
-                print("up")
+                upLabel.configure(text="Up: " + str(speed))
+                upLabel.update()
             elif e.button == buttons.DOWN:
                 drone.down(speed)
-                print("down")
+                downLabel.configure(text="Down: " + str(speed))
+                downLabel.update()
             elif e.button == buttons.ROTATE_RIGHT:
                 drone.clockwise(speed)
-                print("c")
+                clockwiseLabel.configure(text="Clockwise: " + str(speed))
+                clockwiseLabel.update()
             elif e.button == buttons.ROTATE_LEFT:
                 drone.counter_clockwise(speed)
-                print("cc")
+                counterclockwiseLabel.configure(text="Counterclockwise: " + str(speed))
+                counterclockwiseLabel.update()
             elif e.button == buttons.FORWARD:
                 drone.forward(speed)
-                print("forward")
+                forwardLabel.configure(text="Forward: " + str(speed))
+                forwardLabel.update()
             elif e.button == buttons.BACKWARD:
                 drone.backward(speed)
-                print("backward")
+                backwardLabel.configure(text="Backward: " + str(speed))
+                backwardLabel.update()
             elif e.button == buttons.RIGHT:
                 drone.right(speed)
-                print("right")
+                rightLabel.configure(text="Right: " + str(speed))
+                rightLabel.update()
             elif e.button == buttons.LEFT:
                 drone.left(speed)
-                print("left")
+                leftLabel.configure(text="Left: " + str(speed))
+                leftLabel.update()
         elif e.type == pygame.locals.JOYBUTTONUP:
             if e.button == buttons.TAKEOFF:
                 drone.takeoff()
-                print("takeoff")
             elif e.button == buttons.UP:
                 drone.up(0)
+                upLabel.configure(text="Up: " + str(0))
+                upLabel.update()
             elif e.button == buttons.DOWN:
                 drone.down(0)
+                downLabel.configure(text="Down: " + str(0))
+                downLabel.update()
             elif e.button == buttons.ROTATE_RIGHT:
                 drone.clockwise(0)
+                clockwiseLabel.configure(text="Clockwise: " + str(0))
+                clockwiseLabel.update()
             elif e.button == buttons.ROTATE_LEFT:
                 drone.counter_clockwise(0)
+                counterclockwiseLabel.configure(text="Counterclockwise: " + str(0))
+                counterclockwiseLabel.update()
             elif e.button == buttons.FORWARD:
                 drone.forward(0)
+                forwardLabel.configure(text="Forward: " + str(0))
+                forwardLabel.update()
             elif e.button == buttons.BACKWARD:
                 drone.backward(0)
+                backwardLabel.configure(text="Backward: " + str(0))
+                backwardLabel.update()
             elif e.button == buttons.RIGHT:
                 drone.right(0)
+                rightLabel.configure(text="Right: " + str(0))
+                rightLabel.update()
             elif e.button == buttons.LEFT:
                 drone.left(0)
+                leftLabel.configure(text="Left: " + str(0))
+                leftLabel.update()
 
 
 ###################################################
@@ -297,7 +357,8 @@ def getVideo():
     global frame_idx
     global VIDEO_SCALE
     global videoLabel
-    #global videoLabel2
+    global typeOfVideo
+
     try:
         while True:
             time.sleep(0.01)
@@ -350,18 +411,18 @@ def getVideo():
                 prev_gray = frame_gray
                 #cv.imshow('Tello Dense Optical - Middlebury Research', vis)
 
-                im = Image.fromarray(vis, 'RGB')
-                imageTk = ImageTk.PhotoImage(image=im)
-                videoLabel.configure(image=imageTk)
-                videoLabel.image = imageTk
-                videoLabel.update()
-
-
-                #im = Image.fromarray(frame)
-                #imageTk = ImageTk.PhotoImage(image=im)
-                #videoLabel2.configure(image=imageTk)
-                #videoLabel2.image = imageTk
-                #videoLabel2.update()
+                if typeOfVideo.get() == "Optical Flow":
+                    im = Image.fromarray(vis, 'RGB')
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
+                elif typeOfVideo.get() == "Normal":
+                    im = Image.fromarray(frame, 'RGB')
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
 
                 # mainloop()
                 #mainFrame.update()
@@ -376,33 +437,81 @@ def getVideo():
 
 ###################################################
 
+def takeoff():
+    global drone
+    drone.takeoff()
+
+def land():
+    global drone
+    drone.land()
+
+###################################################
+
 
 try:
     # Set up main frame
     mainFrame = Tk()
     mainFrame.title("Tello: Middlebury Research")
 
+    # Set up and bind trajectory labels
+    forwardLabel = Label(mainFrame, text="Forward: 0")
+    backwardLabel = Label(mainFrame, text="Backward: 0")
+    upLabel = Label(mainFrame, text="Up: 0")
+    downLabel = Label(mainFrame, text="Down: 0")
+    leftLabel = Label(mainFrame, text="Left: 0")
+    rightLabel = Label(mainFrame, text="Right: 0")
+    clockwiseLabel = Label(mainFrame, text="Clockwise: 0")
+    counterclockwiseLabel = Label(mainFrame, text="Counterclockwise: 0")
+    pitchLabel = Label(mainFrame, text="Pitch: 0")
+    yawLabel = Label(mainFrame, text="Yaw: 0")
+    throttleLabel = Label(mainFrame, text="Throttle: 0")
+    rollLabel = Label(mainFrame, text="Roll: 0")
+
+    forwardLabel.grid(row=0, column=1, sticky=E)
+    backwardLabel.grid(row=1, column=1, sticky=E)
+    upLabel.grid(row=2, column=1, sticky=E)
+    downLabel.grid(row=3, column=1, sticky=E)
+    leftLabel.grid(row=4, column=1, sticky=E)
+    rightLabel.grid(row=5, column=1, sticky=E)
+    clockwiseLabel.grid(row=6, column=1, sticky=E)
+    counterclockwiseLabel.grid(row=7, column=1, sticky=E)
+    pitchLabel.grid(row=8, column=1, sticky=E)
+    yawLabel.grid(row=9, column=1, sticky=E)
+    throttleLabel.grid(row=10, column=1, sticky=E)
+    rollLabel.grid(row=11, column=1, sticky=E)
+
     # Set up and bind buttons
     connectControllerButton = Button(
         mainFrame, text="Connect Controller", command=connectController)
-    connectControllerButton.grid(row=0, column=0, sticky=W)
+    connectControllerButton.grid(row=1, column=3, sticky=W)
 
     connectDroneButton = Button(
         mainFrame, text="Connect Drone", command=connectDrone)
-    connectDroneButton.grid(row=1, column=0, sticky=W)
+    connectDroneButton.grid(row=2, column=3, sticky=W)
 
     getVidoButton = Button(mainFrame, text="GetVideo", command=getVideo)
-    getVidoButton.grid(row=2, column=0, sticky=W)
+    #getVidoButton.grid(row=13, column=1, sticky=W)
+
+    takeoffButton = Button(mainFrame, text="Takeoff", command=takeoff)
+    takeoffButton.grid(row=3, column=3, sticky=W)
+
+    landButton = Button(mainFrame, text="Land", command=land)
+    landButton.grid(row=4, column=3, sticky=W)
+
+
+    typeOfVideo = StringVar(mainFrame)
+    typeOfVideo.set("Normal") # default value
+    w = OptionMenu(mainFrame, typeOfVideo, "Normal", "Optical Flow")
+    w.grid(row=5, column=3, sticky=W)
 
     img = cv.imread('pic.jpg')
     im = Image.fromarray(img)
     imageTk = ImageTk.PhotoImage(image=im)
     videoLabel = Label(mainFrame, image=imageTk)
-    videoLabel.grid(rowspan=3, column=1, sticky=E)
-    #videoLabel2 = Label(mainFrame)
-    #videoLabel2.pack()
+    videoLabel.grid(row=0, rowspan=11, column=2, sticky=N)
 
     mainloop()
+
 except Exception as ex:
     exc_type, exc_value, exc_traceback = sys.exc_info()
     traceback.print_exception(exc_type, exc_value, exc_traceback)
