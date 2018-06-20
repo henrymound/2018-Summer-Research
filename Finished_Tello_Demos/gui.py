@@ -377,29 +377,36 @@ def getVideo():
 ###################################################
 
 
+try:
+    # Set up main frame
+    mainFrame = Tk()
+    mainFrame.title("Tello: Middlebury Research")
 
-# Set up main frame
-mainFrame = Tk()
-mainFrame.title("Tello: Middlebury Research")
+    # Set up and bind buttons
+    connectControllerButton = Button(
+        mainFrame, text="Connect Controller", command=connectController)
+    connectControllerButton.grid(row=0, column=0, sticky=W)
 
-# Set up and bind buttons
-connectControllerButton = Button(
-    mainFrame, text="Connect Controller", command=connectController)
-connectControllerButton.pack()
+    connectDroneButton = Button(
+        mainFrame, text="Connect Drone", command=connectDrone)
+    connectDroneButton.grid(row=1, column=0, sticky=W)
 
-connectDroneButton = Button(
-    mainFrame, text="Connect Drone", command=connectDrone)
-connectDroneButton.pack()
+    getVidoButton = Button(mainFrame, text="GetVideo", command=getVideo)
+    getVidoButton.grid(row=2, column=0, sticky=W)
 
-getVidoButton = Button(mainFrame, text="GetVideo", command=getVideo)
-getVidoButton.pack()
+    img = cv.imread('pic.jpg')
+    im = Image.fromarray(img)
+    imageTk = ImageTk.PhotoImage(image=im)
+    videoLabel = Label(mainFrame, image=imageTk)
+    videoLabel.grid(rowspan=3, column=1, sticky=E)
+    #videoLabel2 = Label(mainFrame)
+    #videoLabel2.pack()
 
-img = cv.imread('pic.jpg')
-im = Image.fromarray(img)
-imageTk = ImageTk.PhotoImage(image=im)
-videoLabel = Label(mainFrame, image=imageTk)
-videoLabel.pack()
-#videoLabel2 = Label(mainFrame)
-#videoLabel2.pack()
-
-mainloop()
+    mainloop()
+except Exception as ex:
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    traceback.print_exception(exc_type, exc_value, exc_traceback)
+    print(ex)
+finally:
+    drone.quit()
+    cv.destroyAllWindows()
