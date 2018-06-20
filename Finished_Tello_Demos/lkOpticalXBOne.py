@@ -7,7 +7,7 @@ import numpy as np
 import pygame
 import pygame.locals
 import time
-import video
+import lib.video
 from lib.common import anorm2, draw_str
 from time import clock
 import threading
@@ -229,7 +229,7 @@ def main():
 
     feature_params = dict( maxCorners = 200,
                            qualityLevel = 0.03,
-                           minDistance = 7,
+                           minDistance = 30,
                            blockSize = 7 )
 
     try:
@@ -242,7 +242,7 @@ def main():
         detect_interval = 5
         tracks = []
         frame_idx = 0
-        VIDEO_SCALE = 0.5
+        VIDEO_SCALE = 0.35
 
         #drone.set_video_encoder_rate(2)
         container = av.open(drone.get_video_stream())

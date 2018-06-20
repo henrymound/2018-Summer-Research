@@ -41,7 +41,7 @@ import cv2 as cv
 from time import clock
 
 # local modules
-from tst_scene_render import TestSceneRender
+from lib.tst_scene_render import TestSceneRender
 import common
 
 class VideoSynthBase(object):
