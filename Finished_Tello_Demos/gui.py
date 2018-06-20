@@ -445,6 +445,31 @@ def land():
     global drone
     drone.land()
 
+def flipForward():
+    global drone
+    drone.flip_forward()
+def flipBackward():
+    global drone
+    drone.flip_back()
+def flipRight():
+    global drone
+    drone.flip_right()
+def flipLeft():
+    global drone
+    drone.flip_left()
+def flipForwardLeft():
+    global drone
+    drone.flip_forwardleft()
+def flipForwardRight():
+    global drone
+    drone.flip_forwardright()
+def flipBackwardLeft():
+    global drone
+    drone.flip_backleft()
+def flipBackwardRight():
+    global drone
+    drone.flip_backright()
+
 ###################################################
 
 
@@ -483,21 +508,39 @@ try:
     # Set up and bind buttons
     connectControllerButton = Button(
         mainFrame, text="Connect Controller", command=connectController)
-    connectControllerButton.grid(row=1, column=3, sticky=W)
+    connectControllerButton.grid(row=0, column=3, sticky=W)
 
     connectDroneButton = Button(
         mainFrame, text="Connect Drone", command=connectDrone)
-    connectDroneButton.grid(row=2, column=3, sticky=W)
+    connectDroneButton.grid(row=1, column=3, sticky=W)
 
     getVidoButton = Button(mainFrame, text="GetVideo", command=getVideo)
     #getVidoButton.grid(row=13, column=1, sticky=W)
 
     takeoffButton = Button(mainFrame, text="Takeoff", command=takeoff)
-    takeoffButton.grid(row=3, column=3, sticky=W)
+    takeoffButton.grid(row=2, column=3, sticky=W)
 
     landButton = Button(mainFrame, text="Land", command=land)
-    landButton.grid(row=4, column=3, sticky=W)
+    landButton.grid(row=3, column=3, sticky=W)
 
+    # Add flip buttons
+    flipForwardButton = Button(mainFrame, text="Flip Forward", command=flipForward)
+    flipBackwardButton = Button(mainFrame, text="Flip Backward", command=flipBackward)
+    flipRightButton = Button(mainFrame, text="Flip Right", command=flipRight)
+    flipLeftButton = Button(mainFrame, text="Flip Left", command=flipLeft)
+    flipForwardLeftButton = Button(mainFrame, text="Flip Forward Left", command=flipForwardLeft)
+    flipForwardRightButton = Button(mainFrame, text="Flip Forward Right", command=flipForwardRight)
+    flipBackwardLeftButton = Button(mainFrame, text="Flip Backward Left", command=flipBackwardLeft)
+    flipBackwardRightButton = Button(mainFrame, text="Flip Backward Right", command=flipBackwardRight)
+
+    flipForwardButton.grid(row=4, column=3, sticky=W)
+    flipBackwardButton.grid(row=5, column=3, sticky=W)
+    flipRightButton.grid(row=6, column=3, sticky=W)
+    flipLeftButton.grid(row=7, column=3, sticky=W)
+    flipForwardLeftButton.grid(row=8, column=3, sticky=W)
+    flipForwardRightButton.grid(row=9, column=3, sticky=W)
+    flipBackwardLeftButton.grid(row=10, column=3, sticky=W)
+    flipBackwardRightButton.grid(row=11, column=3, sticky=W)
 
     typeOfVideo = StringVar(mainFrame)
     typeOfVideo.set("Normal") # default value
@@ -508,7 +551,7 @@ try:
     im = Image.fromarray(img)
     imageTk = ImageTk.PhotoImage(image=im)
     videoLabel = Label(mainFrame, image=imageTk)
-    videoLabel.grid(row=0, rowspan=11, column=2, sticky=N)
+    videoLabel.grid(row=0, rowspan=13, column=2, sticky=N)
 
     mainloop()
 
