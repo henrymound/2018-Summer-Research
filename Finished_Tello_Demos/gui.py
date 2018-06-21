@@ -492,36 +492,36 @@ try:
     throttleLabel = Label(mainFrame, text="Throttle: 0")
     rollLabel = Label(mainFrame, text="Roll: 0")
 
-    forwardLabel.grid(row=0, column=1, sticky=E)
-    backwardLabel.grid(row=1, column=1, sticky=E)
-    upLabel.grid(row=2, column=1, sticky=E)
-    downLabel.grid(row=3, column=1, sticky=E)
-    leftLabel.grid(row=4, column=1, sticky=E)
-    rightLabel.grid(row=5, column=1, sticky=E)
-    clockwiseLabel.grid(row=6, column=1, sticky=E)
-    counterclockwiseLabel.grid(row=7, column=1, sticky=E)
-    pitchLabel.grid(row=8, column=1, sticky=E)
-    yawLabel.grid(row=9, column=1, sticky=E)
-    throttleLabel.grid(row=10, column=1, sticky=E)
-    rollLabel.grid(row=11, column=1, sticky=E)
+    forwardLabel.grid(row=1, column=1, sticky=E)
+    backwardLabel.grid(row=2, column=1, sticky=E)
+    upLabel.grid(row=3, column=1, sticky=E)
+    downLabel.grid(row=4, column=1, sticky=E)
+    leftLabel.grid(row=5, column=1, sticky=E)
+    rightLabel.grid(row=6, column=1, sticky=E)
+    clockwiseLabel.grid(row=7, column=1, sticky=E)
+    counterclockwiseLabel.grid(row=8, column=1, sticky=E)
+    pitchLabel.grid(row=9, column=1, sticky=E)
+    yawLabel.grid(row=10, column=1, sticky=E)
+    throttleLabel.grid(row=11, column=1, sticky=E)
+    rollLabel.grid(row=12, column=1, sticky=E)
 
     # Set up and bind buttons
     connectControllerButton = Button(
         mainFrame, text="Connect Controller", command=connectController)
-    connectControllerButton.grid(row=0, column=3, sticky=W)
+    connectControllerButton.grid(row=1, column=3, sticky=W)
 
     connectDroneButton = Button(
         mainFrame, text="Connect Drone", command=connectDrone)
-    connectDroneButton.grid(row=1, column=3, sticky=W)
+    connectDroneButton.grid(row=2, column=3, sticky=W)
 
     getVidoButton = Button(mainFrame, text="GetVideo", command=getVideo)
     #getVidoButton.grid(row=13, column=1, sticky=W)
 
     takeoffButton = Button(mainFrame, text="Takeoff", command=takeoff)
-    takeoffButton.grid(row=2, column=3, sticky=W)
+    takeoffButton.grid(row=3, column=3, sticky=W)
 
     landButton = Button(mainFrame, text="Land", command=land)
-    landButton.grid(row=3, column=3, sticky=W)
+    landButton.grid(row=4, column=3, sticky=W)
 
     # Add flip buttons
     flipForwardButton = Button(mainFrame, text="Flip Forward", command=flipForward)
@@ -533,25 +533,25 @@ try:
     flipBackwardLeftButton = Button(mainFrame, text="Flip Backward Left", command=flipBackwardLeft)
     flipBackwardRightButton = Button(mainFrame, text="Flip Backward Right", command=flipBackwardRight)
 
-    flipForwardButton.grid(row=4, column=3, sticky=W)
-    flipBackwardButton.grid(row=5, column=3, sticky=W)
-    flipRightButton.grid(row=6, column=3, sticky=W)
-    flipLeftButton.grid(row=7, column=3, sticky=W)
-    flipForwardLeftButton.grid(row=8, column=3, sticky=W)
-    flipForwardRightButton.grid(row=9, column=3, sticky=W)
-    flipBackwardLeftButton.grid(row=10, column=3, sticky=W)
-    flipBackwardRightButton.grid(row=11, column=3, sticky=W)
+    flipForwardButton.grid(row=5, column=3, sticky=W)
+    flipBackwardButton.grid(row=6, column=3, sticky=W)
+    flipRightButton.grid(row=7, column=3, sticky=W)
+    flipLeftButton.grid(row=8, column=3, sticky=W)
+    flipForwardLeftButton.grid(row=9, column=3, sticky=W)
+    flipForwardRightButton.grid(row=10, column=3, sticky=W)
+    flipBackwardLeftButton.grid(row=11, column=3, sticky=W)
+    flipBackwardRightButton.grid(row=12, column=3, sticky=W)
 
     typeOfVideo = StringVar(mainFrame)
     typeOfVideo.set("Normal") # default value
     w = OptionMenu(mainFrame, typeOfVideo, "Normal", "Optical Flow")
-    w.grid(row=5, column=3, sticky=W)
+    w.grid(row=0, column=1, columnspan=3, sticky=W+E+N+S)
 
     img = cv.imread('pic.jpg')
     im = Image.fromarray(img)
     imageTk = ImageTk.PhotoImage(image=im)
     videoLabel = Label(mainFrame, image=imageTk)
-    videoLabel.grid(row=0, rowspan=13, column=2, sticky=N)
+    videoLabel.grid(row=1, rowspan=12, column=2, sticky=N)
 
     mainloop()
 
