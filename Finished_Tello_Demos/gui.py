@@ -180,7 +180,7 @@ track_len = 10
 detect_interval = 5
 tracks = []
 frame_idx = 0
-VIDEO_SCALE = 0.25
+VIDEO_SCALE = 0.35
 
 
 ###################################################
@@ -485,6 +485,14 @@ def getVideo():
                     videoLabel.configure(image=imageTk)
                     videoLabel.image = imageTk
                     videoLabel.update()
+                elif typeOfVideo.get() == "BGR":
+                    frame = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
+                    frame1 = cv.resize(frame, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
+                    im = Image.fromarray(frame1)
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
                 elif typeOfVideo.get() == "Black & White":
                     frame = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
                     frame1 = cv.resize(frame, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
@@ -634,15 +642,16 @@ try:
     flipBackwardRightButton.grid(row=14, column=3, sticky=W)
 
     typeOfVideo = StringVar(mainFrame)
-    typeOfVideo.set("Color") # default value
+    typeOfVideo.set("Black & White") # default value
     w = OptionMenu(mainFrame,
                     typeOfVideo,
                     "Color",
+                    "LK Optical Flow",
                     "Grayscale",
                     "Black & White",
-                    "LK Optical Flow",
-                    "Optical Flow",
-                    "Canny Edge Detection")
+                    "BGR",
+                    "Canny Edge Detection",
+                    "Optical Flow")
     w.grid(row=1, column=1, columnspan=3, sticky=W+E+N+S)
 
     img = cv.imread('pic.jpg')
