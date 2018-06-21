@@ -384,11 +384,10 @@ def getVideo():
 
     try:
         while connectingToDrone:
-            time.sleep(0.03)
+            #time.sleep(0.03)
             for frameRaw in container.decode(video=0):
                 checkController()
-                frameCount += 1
-                if typeOfVideo.get() == "Canny Edge Detection":                
+                if typeOfVideo.get() == "Canny Edge Detection":
                     frame1 = np.array(frameRaw.to_image())
                     frame1 = cv.resize(frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
                     frameCanny = cv.Canny(frame1, 50, 100)
@@ -448,28 +447,29 @@ def getVideo():
                     videoLabel.image = imageTk
                     videoLabel.update()
                 elif typeOfVideo.get() == "Optical Flow":
+                    frameCount += 1
                     if frameCount == 1: # If first frame
-                        frame1 = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                        prvs = cv.cvtColor(frame1,cv.COLOR_BGR2GRAY)
-                        hsv = np.zeros_like(frame1)
+                        frame1Optical = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
+                        prvs = cv.cvtColor(frame1Optical,cv.COLOR_BGR2GRAY)
+                        hsv = np.zeros_like(frame1Optical)
                         hsv[...,1] = 255
                     else: # If not first frame
-                        frame2 = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                        next = cv.cvtColor(frame2,cv.COLOR_BGR2GRAY)
+                        frame2Optical = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
+                        next = cv.cvtColor(frame2Optical,cv.COLOR_BGR2GRAY)
                         flow = cv.calcOpticalFlowFarneback(prvs,next, None, 0.5, 3, 15, 3, 5, 1.2, 0)
                         mag, ang = cv.cartToPolar(flow[...,0], flow[...,1])
                         hsv[...,0] = ang*180/np.pi/2
                         hsv[...,2] = cv.normalize(mag,None,0,255,cv.NORM_MINMAX)
                         bgr = cv.cvtColor(hsv,cv.COLOR_HSV2BGR)
-                        cv.imshow('frame2',bgr)
+                        im = Image.fromarray(cv.resize(frame2Optical, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE))
+                        imageTk = ImageTk.PhotoImage(image=im)
+                        videoLabel.configure(image=imageTk)
+                        videoLabel.image = imageTk
+                        videoLabel.update()
                         k = cv.waitKey(30) & 0xff
                         if k == 27:
                             break
-                        elif k == ord('s'):
-                            cv.imwrite('opticalfb.png',frame2)
-                            cv.imwrite('opticalhsv.png',bgr)
                         prvs = next
-                    print(frameCount)
                 elif typeOfVideo.get() == "Grayscale":
                     frame = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
                     frame1 = cv.resize(frame, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
@@ -634,14 +634,14 @@ try:
     flipBackwardRightButton.grid(row=14, column=3, sticky=W)
 
     typeOfVideo = StringVar(mainFrame)
-    typeOfVideo.set("Normal") # default value
+    typeOfVideo.set("Color") # default value
     w = OptionMenu(mainFrame,
                     typeOfVideo,
-                    "Normal",
+                    "Color",
                     "Grayscale",
                     "Black & White",
                     "LK Optical Flow",
-                    #"Optical Flow",
+                    "Optical Flow",
                     "Canny Edge Detection")
     w.grid(row=1, column=1, columnspan=3, sticky=W+E+N+S)
 
