@@ -180,7 +180,7 @@ track_len = 10
 detect_interval = 5
 tracks = []
 frame_idx = 0
-VIDEO_SCALE = 0.35
+VIDEO_SCALE = 0.25
 
 
 ###################################################
@@ -200,14 +200,13 @@ def connectDrone():
         drone.wait_for_connection(60.0)
         container = av.open(drone.get_video_stream())
         connectDroneButton.configure(text="Disconnect Drone")
-        # getVideo()
+        getVideo()
     else:
         drone.quit()
         connectDroneButton.configure(text="Connect Drone")
     connectDroneButton.update()
 
 ###################################################
-
 
 speed = 100
 throttle = 0.0
@@ -247,8 +246,7 @@ def checkController():
                 throttle = update(
                     throttle, e.value * buttons.LEFT_Y_REVERSE)
                 drone.set_throttle(throttle)
-                throttleLabel.configure(
-                    text="Throttle: " + str("%.2f" % throttle))
+                throttleLabel.configure(text="Throttle: " + str("%.2f" % throttle))
                 throttleLabel.update()
             if e.axis == buttons.LEFT_X:
                 yaw = update(yaw, e.value * buttons.LEFT_X_REVERSE)
@@ -270,8 +268,7 @@ def checkController():
         elif e.type == pygame.locals.JOYHATMOTION:
             if e.value[0] < 0:
                 drone.counter_clockwise(speed)
-                counterclockwiseLabel.configure(
-                    text="Counterclockwise: " + str(speed))
+                counterclockwiseLabel.configure(text="Counterclockwise: " + str(speed))
                 counterclockwiseLabel.update()
             if e.value[0] == 0:
                 drone.clockwise(0)
@@ -310,8 +307,7 @@ def checkController():
                 clockwiseLabel.update()
             elif e.button == buttons.ROTATE_LEFT:
                 drone.counter_clockwise(speed)
-                counterclockwiseLabel.configure(
-                    text="Counterclockwise: " + str(speed))
+                counterclockwiseLabel.configure(text="Counterclockwise: " + str(speed))
                 counterclockwiseLabel.update()
             elif e.button == buttons.FORWARD:
                 drone.forward(speed)
@@ -346,8 +342,7 @@ def checkController():
                 clockwiseLabel.update()
             elif e.button == buttons.ROTATE_LEFT:
                 drone.counter_clockwise(0)
-                counterclockwiseLabel.configure(
-                    text="Counterclockwise: " + str(0))
+                counterclockwiseLabel.configure(text="Counterclockwise: " + str(0))
                 counterclockwiseLabel.update()
             elif e.button == buttons.FORWARD:
                 drone.forward(0)
@@ -380,161 +375,147 @@ def getVideo():
     global videoLabel
     global typeOfVideo
     global connectingToDrone
-    frameCount = 0  # Stores the current frame being processed
-    frame1Optical = None  # Store variables for first frame
-    frame2Optical = None  # Store variables for second frame
+    frameCount = 0 # Stores the current frame being processed
+    frame1Optical = None # Store variables for first frame
+    frame2Optical = None # Store variables for second frame
     prvs = None
     hsv = None
 
+
     try:
         while connectingToDrone:
-            # time.sleep(0.03)
+            time.sleep(0.03)
+            for frameRaw in container.decode(video=0):
                 checkController()
                 frameCount += 1
-                if typeOfVideo.get() == "Canny Edge Detection":
-                    for frameRaw in container.decode(video=0):
-                        try:
-                            cv.waitKey(1)
-                            frame1 = cv.cvtColor(
-                                np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                            im = Image.fromarray(
-                                cv.Canny(frame1, 500, 1000), 'RGB')
-                            imageTk = ImageTk.PhotoImage(image=im)
-                            videoLabel.configure(image=imageTk)
-                            videoLabel.image = imageTk
-                            videoLabel.update()
-                        except Exception as ex:
-                            exc_type, exc_value, exc_traceback = sys.exc_info()
-                            traceback.print_exception(
-                                exc_type, exc_value, exc_traceback)
-                            print(ex)
+                if typeOfVideo.get() == "Canny Edge Detection":                
+                    frame1 = np.array(frameRaw.to_image())
+                    frame1 = cv.resize(frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
+                    frameCanny = cv.Canny(frame1, 50, 100)
+                    im = Image.fromarray(frameCanny)
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
                 elif typeOfVideo.get() == "LK Optical Flow":
-                    for frameRaw in container.decode(video=0):
-                        cv.waitKey(1)
-                        frame1 = cv.cvtColor(
-                            np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                        frame = frame1
-                        frame = cv.resize(
-                            frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
-                        frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-                        vis = frame.copy()
-                        if len(tracks) > 0:
-                            img0, img1 = prev_gray, frame_gray
-                            p0 = np.float32([tr[-1]
-                                             for tr in tracks]).reshape(-1, 1, 2)
-                            p1, _st, _err = cv.calcOpticalFlowPyrLK(
-                                img0, img1, p0, None, **lk_params)
-                            p0r, _st, _err = cv.calcOpticalFlowPyrLK(
-                                img1, img0, p1, None, **lk_params)
-                            d = abs(p0 - p0r).reshape(-1, 2).max(-1)
-                            good = d < 1
-                            new_tracks = []
+                    frame1 = np.array(frameRaw.to_image())
+                    frame = frame1
+                    frame = cv.resize(frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
+                    frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+                    vis = frame.copy()
+                    if len(tracks) > 0:
+                        img0, img1 = prev_gray, frame_gray
+                        p0 = np.float32([tr[-1]
+                                         for tr in tracks]).reshape(-1, 1, 2)
+                        p1, _st, _err = cv.calcOpticalFlowPyrLK(
+                            img0, img1, p0, None, **lk_params)
+                        p0r, _st, _err = cv.calcOpticalFlowPyrLK(
+                            img1, img0, p1, None, **lk_params)
+                        d = abs(p0 - p0r).reshape(-1, 2).max(-1)
+                        good = d < 1
+                        new_tracks = []
 
-                            for tr, (x, y), good_flag in zip(tracks, p1.reshape(-1, 2), good):
-                                if not good_flag:
-                                    continue
-                                tr.append((x, y))
-                                if len(tr) > track_len:
-                                    del tr[0]
-                                new_tracks.append(tr)
-                                cv.circle(vis, (x, y), 2, (0, 255, 0), -1)
-                            tracks = new_tracks
-                            cv.polylines(vis, [np.int32(tr)
-                                               for tr in tracks], False, (0, 255, 0))
-                            draw_str(vis, (20, 20), 'track count: %d' %
-                                     len(tracks))
+                        for tr, (x, y), good_flag in zip(tracks, p1.reshape(-1, 2), good):
+                            if not good_flag:
+                                continue
+                            tr.append((x, y))
+                            if len(tr) > track_len:
+                                del tr[0]
+                            new_tracks.append(tr)
+                            cv.circle(vis, (x, y), 2, (0, 255, 0), -1)
+                        tracks = new_tracks
+                        cv.polylines(vis, [np.int32(tr)
+                                           for tr in tracks], False, (0, 255, 0))
+                        draw_str(vis, (20, 20), 'track count: %d' % len(tracks))
 
-                        if frame_idx % detect_interval == 0:
-                            mask = np.zeros_like(frame_gray)
-                            mask[:] = 255
-                            for x, y in [np.int32(tr[-1]) for tr in tracks]:
-                                cv.circle(mask, (x, y), 5, 0, -1)
-                            p = cv.goodFeaturesToTrack(
-                                frame_gray, mask=mask, **feature_params)
-                            if p is not None:
-                                for x, y in np.float32(p).reshape(-1, 2):
-                                    tracks.append([(x, y)])
+                    if frame_idx % detect_interval == 0:
+                        mask = np.zeros_like(frame_gray)
+                        mask[:] = 255
+                        for x, y in [np.int32(tr[-1]) for tr in tracks]:
+                            cv.circle(mask, (x, y), 5, 0, -1)
+                        p = cv.goodFeaturesToTrack(
+                            frame_gray, mask=mask, **feature_params)
+                        if p is not None:
+                            for x, y in np.float32(p).reshape(-1, 2):
+                                tracks.append([(x, y)])
 
-                        frame_idx += 1
-                        prev_gray = frame_gray
-                        # cv.imshow('Tello Dense Optical - Middlebury Research', vis)
-                        im = Image.fromarray(vis, 'RGB')
-                        imageTk = ImageTk.PhotoImage(image=im)
-                        videoLabel.configure(image=imageTk)
-                        videoLabel.image = imageTk
-                        videoLabel.update()
+                    frame_idx += 1
+                    prev_gray = frame_gray
+                    #cv.imshow('Tello Dense Optical - Middlebury Research', vis)
+                    im = Image.fromarray(vis, 'RGB')
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
                 elif typeOfVideo.get() == "Optical Flow":
-                    for frameRaw in container.decode(video=0):
-                        cv.waitKey(1)
-                        frame1 = cv.cvtColor(
-                            np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                        frame = frame1
-                        frame = cv.resize(
-                            frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
-                        frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-                        vis = frame.copy()
-                        if frameCount == 1:  # If first frame
-                            frame1 = cv.cvtColor(
-                                np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                            prvs = cv.cvtColor(frame1, cv.COLOR_BGR2GRAY)
-                            hsv = np.zeros_like(frame1)
-                            hsv[..., 1] = 255
-                        else:  # If not first frame
-                            frame2 = cv.cvtColor(
-                                np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                            next = cv.cvtColor(frame2, cv.COLOR_BGR2GRAY)
-                            flow = cv.calcOpticalFlowFarneback(
-                                prvs, next, None, 0.5, 3, 15, 3, 5, 1.2, 0)
-                            mag, ang = cv.cartToPolar(
-                                flow[..., 0], flow[..., 1])
-                            hsv[..., 0] = ang * 180 / np.pi / 2
-                            hsv[..., 2] = cv.normalize(
-                                mag, None, 0, 255, cv.NORM_MINMAX)
-                            bgr = cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
-                            cv.imshow('frame2', bgr)
-                            k = cv.waitKey(30) & 0xff
-                            if k == 27:
-                                break
-                            elif k == ord('s'):
-                                cv.imwrite('opticalfb.png', frame2)
-                                cv.imwrite('opticalhsv.png', bgr)
-                            prvs = next
-                        print(frameCount)
-                elif typeOfVideo.get() == "Normal":
-                    for frameRaw in container.decode(video=0):
-                        while typeOfVideo.get() == "Normal":
-                            cv.waitKey(1)
-                            frame1 = cv.cvtColor(
-                                np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                            frame = frame1
-                            frame = cv.resize(
-                                frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
-                            frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-                            vis = frame.copy()
-                            im = Image.fromarray(frame, 'RGB')
-                            imageTk = ImageTk.PhotoImage(image=im)
-                            videoLabel.configure(image=imageTk)
-                            videoLabel.image = imageTk
-                            videoLabel.update()
+                    if frameCount == 1: # If first frame
+                        frame1 = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
+                        prvs = cv.cvtColor(frame1,cv.COLOR_BGR2GRAY)
+                        hsv = np.zeros_like(frame1)
+                        hsv[...,1] = 255
+                    else: # If not first frame
+                        frame2 = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
+                        next = cv.cvtColor(frame2,cv.COLOR_BGR2GRAY)
+                        flow = cv.calcOpticalFlowFarneback(prvs,next, None, 0.5, 3, 15, 3, 5, 1.2, 0)
+                        mag, ang = cv.cartToPolar(flow[...,0], flow[...,1])
+                        hsv[...,0] = ang*180/np.pi/2
+                        hsv[...,2] = cv.normalize(mag,None,0,255,cv.NORM_MINMAX)
+                        bgr = cv.cvtColor(hsv,cv.COLOR_HSV2BGR)
+                        cv.imshow('frame2',bgr)
+                        k = cv.waitKey(30) & 0xff
+                        if k == 27:
+                            break
+                        elif k == ord('s'):
+                            cv.imwrite('opticalfb.png',frame2)
+                            cv.imwrite('opticalhsv.png',bgr)
+                        prvs = next
+                    print(frameCount)
                 elif typeOfVideo.get() == "Grayscale":
-                    for frameRaw in container.decode(video=0):
-                        while typeOfVideo.get() == "Grayscale":
-                            cv.waitKey(1)
-                            frame1 = cv.cvtColor(
-                                np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
-                            frame_gray = cv.cvtColor(frame1, cv.COLOR_BGR2GRAY)
-                            vis = frame.copy()
-                            im = Image.fromarray(frame_gray, 'RGB')
-                            imageTk = ImageTk.PhotoImage(image=im)
-                            videoLabel.configure(image=imageTk)
-                            videoLabel.image = imageTk
-                            videoLabel.update()
+                    frame = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
+                    frame1 = cv.resize(frame, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
 
-            # mainloop()
-            # mainFrame.update()
-                ch = cv.waitKey(1)
-                if ch == 27:
-                    break
+                    im = Image.fromarray(frame1, 'RGB')
+                    gray = im.convert('L')
+
+                    # Using numpy, convert pixels to pure black or white
+                    bw = np.asarray(gray).copy()
+
+                    im = Image.fromarray(bw)
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
+                elif typeOfVideo.get() == "Black & White":
+                    frame = cv.cvtColor(np.array(frameRaw.to_image()), cv.COLOR_RGB2BGR)
+                    frame1 = cv.resize(frame, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
+
+                    im = Image.fromarray(frame1, 'RGB')
+                    gray = im.convert('L')
+
+                    # Using numpy, convert pixels to pure black or white
+                    bw = np.asarray(gray).copy()
+
+                    # Pixel range is 0...255, 256/2 = 128
+                    bw[bw < 128] = 0    # Black
+                    bw[bw >= 128] = 255 # White
+                    im = Image.fromarray(bw)
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
+                else: # typeOfVideo.get() == "Normal":
+                    frame1 = np.array(frameRaw.to_image())
+                    frame1 = cv.resize(frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
+                    im = Image.fromarray(frame1, 'RGB')
+                    imageTk = ImageTk.PhotoImage(image=im)
+                    videoLabel.configure(image=imageTk)
+                    videoLabel.image = imageTk
+                    videoLabel.update()
+
+
+            ch = cv.waitKey(1)
+            if ch == 27:
+                break
     except Exception as ex:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         traceback.print_exception(exc_type, exc_value, exc_traceback)
@@ -624,7 +605,7 @@ try:
         mainFrame, text="Connect Drone", command=connectDrone)
     connectDroneButton.grid(row=3, column=3, sticky=W)
 
-    getVidoButton = Button(mainFrame, text="GetVideo", command=getVideo)
+    getVidoButton = Button(mainFrame, text="Get Video", command=getVideo)
     getVidoButton.grid(row=4, column=3, sticky=W)
 
     takeoffButton = Button(mainFrame, text="Takeoff", command=takeoff)
@@ -658,8 +639,9 @@ try:
                     typeOfVideo,
                     "Normal",
                     "Grayscale",
+                    "Black & White",
                     "LK Optical Flow",
-                    "Optical Flow",
+                    #"Optical Flow",
                     "Canny Edge Detection")
     w.grid(row=1, column=1, columnspan=3, sticky=W+E+N+S)
 
