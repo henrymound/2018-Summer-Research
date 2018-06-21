@@ -11,6 +11,7 @@ import traceback
 import numpy as np
 import lib.video
 from PIL import Image, ImageTk
+import datetime
 
 videoLabel = None
 mainFrame = None
@@ -24,6 +25,7 @@ leftLabel = None
 rightLabel = None
 connectingToDrone = False
 connectDroneButton = None
+takePicture = False
 
 ###################################################
 
@@ -180,7 +182,7 @@ track_len = 10
 detect_interval = 5
 tracks = []
 frame_idx = 0
-VIDEO_SCALE = 0.35
+VIDEO_SCALE = 0.3
 
 
 ###################################################
@@ -375,6 +377,7 @@ def getVideo():
     global videoLabel
     global typeOfVideo
     global connectingToDrone
+    global takePicture
     frameCount = 0 # Stores the current frame being processed
     frame1Optical = None # Store variables for first frame
     frame2Optical = None # Store variables for second frame
@@ -387,6 +390,15 @@ def getVideo():
             #time.sleep(0.03)
             for frameRaw in container.decode(video=0):
                 checkController()
+                if takePicture:
+                    frame1 = np.array(frameRaw.to_image())
+                    #im = Image.fromarray(frame1, 'RGB')
+                    cv.imwrite("pics/"+datetime.datetime.now().isoformat()+".jpg", frame1)
+                    #imageTk = ImageTk.PhotoImage(image=im)
+                    #videoLabel.configure(image=imageTk)
+                    #videoLabel.image = imageTk
+                    #videoLabel.update()
+                    takePicture = False
                 if typeOfVideo.get() == "Canny Edge Detection":
                     frame1 = np.array(frameRaw.to_image())
                     frame1 = cv.resize(frame1, (0, 0), fx=VIDEO_SCALE, fy=VIDEO_SCALE)
@@ -531,6 +543,10 @@ def getVideo():
 
 ###################################################
 
+def takePicturePressed():
+    global takePicture
+    takePicture = True
+
 def takeoff():
     global drone
     drone.takeoff()
@@ -572,6 +588,7 @@ try:
     # Set up main frame
     mainFrame = Tk()
     mainFrame.title("Tello: Middlebury Research")
+    #mainFrame.configure(background='black')
 
     # Set up and bind controler label
     controllerLabel = Label(mainFrame, text=js_name)
@@ -621,6 +638,9 @@ try:
 
     landButton = Button(mainFrame, text="Land", command=land)
     landButton.grid(row=6, column=3, sticky=W)
+
+    takePictureButton = Button(mainFrame, text="Take Picture", command=takePicturePressed, fg="red")
+    takePictureButton.grid(row=0, column=3, sticky=W+E+N+S)
 
     # Add flip buttons
     flipForwardButton = Button(mainFrame, text="Flip Forward", command=flipForward)
