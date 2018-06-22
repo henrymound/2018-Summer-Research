@@ -7,10 +7,10 @@ All controller input has only been tested using an XBox One controller and the M
 This is a gui-based python app that grants full access to the Ryze Tello. This program supports game controller input for XBox One ([Mac users need to install the drivers](https://github.com/360Controller/360Controller/releases)), Dualshock 3, and Dualshock 4. This app also grants full video stream access as well as some opencv-based image processing. *Gui.py* also supports taking pictures and all 8-direction flips.
 
 Here are some screenshots of *Gui.py* in action:
-- ![Imgur](https://i.imgur.com/B50tn5V.png)
-- ![Imgur](https://i.imgur.com/O913loo.png)
-- ![Imgur](https://i.imgur.com/IUMyn0o.png)
-- ![Imgur](https://i.imgur.com/YBMhARb.png)
-- ![Imgur](https://i.imgur.com/Kukq6to.png)
-- ![Imgur](https://i.imgur.com/vawSxlh.png)
-- ![Imgur](https://i.imgur.com/CZbcY2i.png)
+![Imgur](https://i.imgur.com/B50tn5V.png)
+![Imgur](https://i.imgur.com/O913loo.png)
+![Imgur](https://i.imgur.com/IUMyn0o.png)
+![Imgur](https://i.imgur.com/YBMhARb.png)
+![Imgur](https://i.imgur.com/Kukq6to.png)
+![Imgur](https://i.imgur.com/vawSxlh.png)
+![Imgur](https://i.imgur.com/CZbcY2i.png)
