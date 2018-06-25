@@ -1,7 +1,7 @@
 # 2018 Summer Research
-This summer Professor Jason Grant and his research assistant, Henry Mound, are exploring the application of drone-based computer vision to crowd behavior analysis. Specifically, they are analyzing holistic motion of crowds to detect regions of dominant flow and to detect abnormal motion within the scene. By using a technique called optical flow, they are able to analyze the apparent motion of objects in a scene by calculating the displacement vectors between points in consecutive frames of video. Increasingly ubiquitous surveillance of massive crowds at sporting events, concerts, amusement parks, airports, and other venues motivates a growing desire to process and analyze crowd scenes.
+This summer Professor Jason Grant and his research assistant, Henry Mound, are exploring the application of drone-based computer vision for crowd behavior analysis. Specifically, they are analyzing holistic motion of crowds to detect regions of dominant flow and to detect abnormal motion within a scene. By using a technique called optical flow, they are able to analyze the apparent motion of objects in a scene by calculating the displacement vectors between points in consecutive frames of video.
 
-The team is working with various hardware configurations and computer vision platforms. Their findings will help inform what technologies Professor Grant will teach in his new class, , which will be offered beginning in the Spring semester of 2019.
+The team is working with various hardware configurations and computer vision platforms. Their findings will help inform what technologies Professor Grant will teach in his new robotics class, which will be offered beginning in the Spring semester of 2019.
 
 ## Tello
 *All Go files that give live video require mplayer.*

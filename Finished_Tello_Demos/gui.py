@@ -382,7 +382,7 @@ def getVideo():
     frame1Optical = None # Store variables for first frame
     frame2Optical = None # Store variables for second frame
     prvs = None
-    hsv = None 
+    hsv = None
 
 
     try:
