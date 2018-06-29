@@ -2,11 +2,10 @@ import socket
 import time
 
 sock1 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock1.setsockopt(socket.SOL_SOCKET, 2, 'en0')
+sock1.setsockopt(socket.SOL_SOCKET, 25, 'enp0s8'.encode())
 
 sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock2.setsockopt(socket.SOL_SOCKET,socket.IP_HDRINCL,5)
-
+sock2.setsockopt(socket.SOL_SOCKET, 25, 'enp0s3'.encode())
 
 sock1.sendto('command'.encode(), 0, ('192.168.10.1', 8889))
 sock2.sendto('command'.encode(), 0, ('192.168.10.1', 8889))
