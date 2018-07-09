@@ -7,7 +7,7 @@ import numpy
 
 
 def main():
-    drone2 = tellopy.Tello("wlp1s0", 9001, 6039)
+    drone2 = tellopy.Tello("wlxf8788c004f09", 9000, 6038, 9617)
 
     try:
         drone2.connect()
@@ -18,7 +18,7 @@ def main():
         while True:
             for frame in container2.decode(video=0):
                 image = cv2.cvtColor(numpy.array(frame.to_image()), cv2.COLOR_RGB2BGR)
-                cv2.imshow('Drone 2', image)
+                cv2.imshow('Drone 1', image)
                 cv2.waitKey(1)
 
     except Exception as ex:

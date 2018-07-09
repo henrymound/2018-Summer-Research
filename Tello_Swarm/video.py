@@ -7,8 +7,8 @@ import numpy
 
 
 def main():
-    drone1 = tellopy.Tello("wlxf8788c004f09", 9000, 6038)
-    drone2 = tellopy.Tello("wlp1s0", 9001, 6039)
+    drone1 = tellopy.Tello("wlxf8788c004f09", 9000, 6038, 9617)
+    drone2 = tellopy.Tello("wlp1s0", 9000, 6039, 9618)
 
     try:
         drone1.connect()

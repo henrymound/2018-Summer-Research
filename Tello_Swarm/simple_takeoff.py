@@ -12,15 +12,15 @@ def handler(event, sender, data, **args):
 
 
 def test():
-    drone1 = tellopy.Tello("wlxf8788c004f09", 9001, 6039)
-    drone2 = tellopy.Tello("wlp1s0", 9002, 6040)
+    drone2 = tellopy.Tello("wlp1s0", 9000, 6038, 9617)
+    drone1 = tellopy.Tello("wlxf8788c004f09", 9000, 6048, 9717)
     try:
-        drone1.subscribe(drone1.EVENT_FLIGHT_DATA, handler)
         drone2.subscribe(drone2.EVENT_FLIGHT_DATA, handler)
-        drone1.connect()
+        drone1.subscribe(drone1.EVENT_FLIGHT_DATA, handler)
         drone2.connect()
-        drone1.wait_for_connection(60.0)
-        drone2.wait_for_connection(60.0)
+        #drone1.connect()
+        #drone1.wait_for_connection(60.0)
+        #drone2.wait_for_connection(60.0)
         drone1.takeoff()
         drone2.takeoff()
         sleep(5)
