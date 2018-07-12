@@ -3,6 +3,9 @@ This summer Professor Jason Grant and his research assistant, Henry Mound, are e
 
 The team is working with various hardware configurations and computer vision platforms. Their findings will help inform what technologies Professor Grant will teach in his new robotics class, which will be offered beginning in the Spring semester of 2019.
 
+## Tello Swarm
+Check out [Adventures with DJI Ryze Tello: Controlling a Tello Swarm](https://medium.com/@henrymound/adventures-with-dji-ryze-tello-controlling-a-tello-swarm-1bce7d4e045d)
+
 ## Tello
 *All Go files that give live video require mplayer.*
 
