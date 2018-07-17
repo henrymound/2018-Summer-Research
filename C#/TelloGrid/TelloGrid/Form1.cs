@@ -10,14 +10,19 @@ using System.Windows.Forms;
 
 namespace TelloGrid
 {
-    public partial class Tello : Form
+    public partial class TelloFrame : Form
     {
-        public Tello()
+        public TelloFrame()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
