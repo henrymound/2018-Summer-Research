@@ -26,5 +26,20 @@ namespace TelloGrid
         {
 
         }
+
+        private void checkBox15_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox7_6_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeployCodeButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
