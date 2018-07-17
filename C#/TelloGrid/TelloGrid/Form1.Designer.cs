@@ -44,7 +44,7 @@
             this.checkBox14 = new System.Windows.Forms.CheckBox();
             this.checkBox15 = new System.Windows.Forms.CheckBox();
             this.checkBox1_7 = new System.Windows.Forms.CheckBox();
-            this.checkBox17 = new System.Windows.Forms.CheckBox();
+            this.checkBox2_7 = new System.Windows.Forms.CheckBox();
             this.checkBox18 = new System.Windows.Forms.CheckBox();
             this.checkBox19 = new System.Windows.Forms.CheckBox();
             this.checkBox20 = new System.Windows.Forms.CheckBox();
@@ -232,14 +232,14 @@
             this.checkBox1_7.TabIndex = 19;
             this.checkBox1_7.UseVisualStyleBackColor = true;
             // 
-            // checkBox17
+            // checkBox2_7
             // 
-            this.checkBox17.AutoSize = true;
-            this.checkBox17.Location = new System.Drawing.Point(469, 132);
-            this.checkBox17.Name = "checkBox17";
-            this.checkBox17.Size = new System.Drawing.Size(22, 21);
-            this.checkBox17.TabIndex = 18;
-            this.checkBox17.UseVisualStyleBackColor = true;
+            this.checkBox2_7.AutoSize = true;
+            this.checkBox2_7.Location = new System.Drawing.Point(469, 132);
+            this.checkBox2_7.Name = "checkBox2_7";
+            this.checkBox2_7.Size = new System.Drawing.Size(22, 21);
+            this.checkBox2_7.TabIndex = 18;
+            this.checkBox2_7.UseVisualStyleBackColor = true;
             // 
             // checkBox18
             // 
@@ -611,7 +611,7 @@
             this.Controls.Add(this.checkBox28);
             this.Controls.Add(this.checkBox15);
             this.Controls.Add(this.checkBox1_7);
-            this.Controls.Add(this.checkBox17);
+            this.Controls.Add(this.checkBox2_7);
             this.Controls.Add(this.checkBox18);
             this.Controls.Add(this.checkBox19);
             this.Controls.Add(this.checkBox20);
@@ -656,7 +656,7 @@
         private System.Windows.Forms.CheckBox checkBox14;
         private System.Windows.Forms.CheckBox checkBox15;
         private System.Windows.Forms.CheckBox checkBox1_7;
-        private System.Windows.Forms.CheckBox checkBox17;
+        private System.Windows.Forms.CheckBox checkBox2_7;
         private System.Windows.Forms.CheckBox checkBox18;
         private System.Windows.Forms.CheckBox checkBox19;
         private System.Windows.Forms.CheckBox checkBox20;
