@@ -33,6 +33,9 @@ namespace TelloGrid
 
         }
 
+        private bool isInBounds(int row, int col) {
+            return (row >= 0 && row <= 6 && col >= 0 && col <= 6);
+        }
 
         private void DeployCodeButton_Click(object sender, EventArgs e)
         {
@@ -40,21 +43,97 @@ namespace TelloGrid
             int col = 3;
             bool validConfig = true;
             ArrayList instructionList = new ArrayList();
-            if (validConfig)
+            while (validConfig)
             {
                 row -= 1;
-                if (checkArray[row, col])
+                if (isInBounds(row, col) && checkArray[row, col])
                 {
-                    // Up
+                    // Up 
+                    instructionList.Add(2);
+                    Console.WriteLine("2");
+                    checkArray[row, col] = false;
                 }
                 else {
                     col -= 1;
+                    if (isInBounds(row, col) && checkArray[row, col])
+                    {
+                        // NorthWest
+                        instructionList.Add(1);
+                        Console.WriteLine("1");
+                        checkArray[row, col] = false;
+                    }
+                    else {
+                        col += 2;
+                        if (isInBounds(row, col) && checkArray[row, col])
+                        {
+                            // NorthEast
+                            instructionList.Add(3);
+                            Console.WriteLine("3");
+                            checkArray[row, col] = false;
+                        }
+                        else {
+                            col -= 2;
+                            row += 1;
+                            if (isInBounds(row, col) && checkArray[row, col])
+                            {
+                                // West
+                                instructionList.Add(4);
+                                Console.WriteLine("4");
+                                checkArray[row, col] = false;
+                            }
+                            else {
+                                col += 2;
+                                if (isInBounds(row, col) && checkArray[row, col])
+                                {
+                                    // East
+                                    instructionList.Add(6);
+                                    Console.WriteLine("6");
+                                    checkArray[row, col] = false;
+                                }
+                                else {
+                                    col -= 2;
+                                    row += 1;
+                                    if (isInBounds(row, col) && checkArray[row, col])
+                                    {
+                                        // SouthWest
+                                        instructionList.Add(7);
+                                        Console.WriteLine("7");
+                                        checkArray[row, col] = false;
+                                    }
+                                    else {
+                                        col += 1;
+                                        if (isInBounds(row, col) && checkArray[row, col])
+                                        {
+                                            // South
+                                            instructionList.Add(8);
+                                            Console.WriteLine("8");
+                                            checkArray[row, col] = false;
+                                        }
+                                        else{
+                                            col += 1;
+                                            if (isInBounds(row, col) && checkArray[row, col])
+                                            {
+                                                // SouthEast
+                                                instructionList.Add(9);
+                                                Console.WriteLine("9");
+                                                checkArray[row, col] = false;
+                                            }
+                                            else {
+                                                validConfig = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
             }
-            else {
-                Console.WriteLine("Invalid Configuration");
-            }
+            Console.WriteLine(instructionList);
+           // else {
+           //     Console.WriteLine("Invalid Configuration");
+           // }
         }
 
         private void checkBox1_1_CheckedChanged(object sender, EventArgs e)
