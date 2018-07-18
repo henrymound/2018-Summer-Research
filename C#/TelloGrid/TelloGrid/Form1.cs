@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections;
 using TelloLib;
 
 namespace TelloGrid
@@ -35,13 +36,24 @@ namespace TelloGrid
 
         private void DeployCodeButton_Click(object sender, EventArgs e)
         {
-            var rowCount = checkArray.GetLength(0);
-            var colCount = checkArray.GetLength(1);
-            for (int row = 0; row < rowCount; row++)
+            int row = 3;
+            int col = 3;
+            bool validConfig = true;
+            ArrayList instructionList = new ArrayList();
+            if (validConfig)
             {
-                for (int col = 0; col < colCount; col++)
-                    Console.Write(String.Format("{0}\t", checkArray[row, col]));
-                Console.WriteLine();
+                row -= 1;
+                if (checkArray[row, col])
+                {
+                    // Up
+                }
+                else {
+                    col -= 1;
+                }
+
+            }
+            else {
+                Console.WriteLine("Invalid Configuration");
             }
         }
 
