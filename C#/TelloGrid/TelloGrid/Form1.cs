@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
+using System.IO;
 using TelloLib;
 
 namespace TelloGrid
@@ -380,5 +381,79 @@ namespace TelloGrid
         {
             checkArray[6, 6] = !checkArray[6, 6];
         }
+
+        private void ConnectDroneButton_Click(object sender, EventArgs e)
+        {
+            //subscribe to Tello connection events
+            Tello.onConnection += (Tello.ConnectionState newState) =>
+            {
+                if (newState != Tello.ConnectionState.Connected)
+                {
+                }
+                if (newState == Tello.ConnectionState.Connected)
+                {
+                    Tello.queryAttAngle();
+                    Tello.setMaxHeight(50);
+
+                }
+            };
+
+            //Log file setup.
+            var logPath = "logs/";
+            System.IO.Directory.CreateDirectory(Path.Combine("../", logPath));
+            var logStartTime = DateTime.Now;
+            var logFilePath = Path.Combine("../", logPath + logStartTime.ToString("yyyy-dd-M--HH-mm-ss") + ".csv");
+
+            //write header for cols in log.
+            File.WriteAllText(logFilePath, "time," + Tello.state.getLogHeader());
+
+            //subscribe to Tello update events.
+            Tello.onUpdate += (cmdId) =>
+            {
+                if (cmdId == 86)//ac update
+                {
+                    //write update to log.
+                    var elapsed = DateTime.Now - logStartTime;
+                    File.AppendAllText(logFilePath, elapsed.ToString(@"mm\:ss\:ff\,") + Tello.state.getLogLine());
+
+                    //display state in console.
+                    var outStr = Tello.state.ToString();//ToString() = Formated state
+                }
+            };
+
+   
+
+            //Connection to send raw video data to local udp port.
+            //To play: ffplay -probesize 32 -sync ext udp://127.0.0.1:7038
+            //To play with minimum latency:ffmpeg -i udp://127.0.0.1:7038 -f sdl "Tello"
+            var videoClient = UdpUser.ConnectTo("127.0.0.1", 7038);
+
+            //subscribe to Tello video data
+            Tello.onVideoData += (byte[] data) =>
+            {
+                try
+                {
+                    videoClient.Send(data.Skip(2).ToArray());//Skip 2 byte header and send to ffplay. 
+                    //Console.WriteLine("Video size:" + data.Length);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            };
+
+            Tello.startConnecting();//Start trying to connect.
+            Tello.takeOff();
+          
+        }
+
+        private void land_button_Click(object sender, EventArgs e)
+        {
+            Tello.land();
+        }
+
+        //Print at x,y in console. 
+
+
     }
 }

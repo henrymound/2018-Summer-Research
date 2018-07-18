@@ -80,6 +80,7 @@
             this.ConnectDroneButton = new System.Windows.Forms.Button();
             this.DeployCodeButton = new System.Windows.Forms.Button();
             this.TitleLabel = new System.Windows.Forms.Label();
+            this.land_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // checkBox4_5
@@ -601,6 +602,7 @@
             this.ConnectDroneButton.TabIndex = 49;
             this.ConnectDroneButton.Text = "Connect to Tello";
             this.ConnectDroneButton.UseVisualStyleBackColor = true;
+            this.ConnectDroneButton.Click += new System.EventHandler(this.ConnectDroneButton_Click);
             // 
             // DeployCodeButton
             // 
@@ -622,11 +624,22 @@
             this.TitleLabel.TabIndex = 51;
             this.TitleLabel.Text = "DJI Tello Flight Path Planner";
             // 
+            // land_button
+            // 
+            this.land_button.Location = new System.Drawing.Point(301, 387);
+            this.land_button.Name = "land_button";
+            this.land_button.Size = new System.Drawing.Size(190, 29);
+            this.land_button.TabIndex = 52;
+            this.land_button.Text = "Land";
+            this.land_button.UseVisualStyleBackColor = true;
+            this.land_button.Click += new System.EventHandler(this.land_button_Click);
+            // 
             // TelloFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.land_button);
             this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.DeployCodeButton);
             this.Controls.Add(this.ConnectDroneButton);
@@ -741,6 +754,7 @@
         private System.Windows.Forms.Button ConnectDroneButton;
         private System.Windows.Forms.Button DeployCodeButton;
         private System.Windows.Forms.Label TitleLabel;
+        private System.Windows.Forms.Button land_button;
     }
 }
 
