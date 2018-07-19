@@ -3,12 +3,17 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.*;
+import java.util.Scanner;
 
 public class main {
 	
 	int GRID_SIZE = 21;
 	
     public static void main(String[] args) {
+       
         new main();
     }
 
@@ -23,29 +28,29 @@ public class main {
 
                 JFrame frame = new JFrame("Tello Flight Path Planner");
                 JButton deployCodeButton = new JButton("Deploy Flight");
+                JButton startFlightButton = new JButton("Start Flight");
                 deployCodeButton.addActionListener(new ActionListener() { 
-                	
-                	  public void actionPerformed(ActionEvent e) { 
-                		    deployCodeButtonPressed();
-                		  } 
-                		} 
-                );
+              	  public void actionPerformed(ActionEvent e) { 
+              		    try {
+							deployCodeButtonPressed();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+              		  } 
+              		} 
+              );
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
-                frame.add(new TestPane());
-                frame.add(deployCodeButton, BorderLayout.SOUTH);
+                frame.add(new TestPane(), BorderLayout.NORTH);
+                frame.add(deployCodeButton, BorderLayout.CENTER);
+                frame.add(startFlightButton, BorderLayout.SOUTH);
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }
         });
     }
-
-    public void deployCodeButtonPressed() {
-    	 System.out.println("DEPLOYING CODE");
-
-    }
-	  
 
     public class TestPane extends JPanel {
     	
@@ -83,8 +88,131 @@ public class main {
         }
     }
 
+
     Deque<CellPane> cellStack = new ArrayDeque<CellPane>();
     Deque<CellObject> intStack = new ArrayDeque<CellObject>();
+    int CONSTANT_DISTANCE = 50;
+    
+    public void deployCodeButtonPressed() throws Exception {
+    	
+    	 System.out.println("DEPLOYING CODE");
+    	 String instructionString = generateStringFromStack();
+    	 System.out.println(instructionString);
+    	 
+    	 
+    	 DatagramSocket clientSocket = new DatagramSocket();
+  	     InetAddress IPAddress = InetAddress.getByName("192.168.10.1"); 
+  	     System.out.println("Connected to Tello");
+  		  
+  	     byte[] sendData = null;
+  	     byte[] receiveData = new byte[256];
+  	      	  
+  	     for (char ch: instructionString.toCharArray()) {  		 
+   	  	    Thread.sleep(2000);
+  	        String sentence = "command";
+  	  		System.out.println("command");
+  	  	    sendData = sentence.getBytes();
+  	  	    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
+  	  	    clientSocket.send(sendPacket);
+  	  		      		  	     
+	  	  	switch (ch) {
+	        case '0': //takeoff
+	        	System.out.println("takeoff");
+	  	  		sentence = "takeoff";
+	  	  	    sendData = sentence.getBytes();
+	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
+	  	  	    clientSocket.send(sendPacket);
+	            break;
+	        case '2': //forward 
+	        	System.out.println("forward " + CONSTANT_DISTANCE);
+	  	  		sentence = "forward " + CONSTANT_DISTANCE;
+	  	  	    sendData = sentence.getBytes();
+	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
+	  	  	    clientSocket.send(sendPacket);
+	            break;
+	        case '8': //backward 
+	        	System.out.println("back " + CONSTANT_DISTANCE);
+	  	  		sentence = "back " + CONSTANT_DISTANCE;
+	  	  	    sendData = sentence.getBytes();
+	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
+	  	  	    clientSocket.send(sendPacket);
+	            break;
+	        case '4': //left 
+	        	System.out.println("left " + CONSTANT_DISTANCE);
+	  	  		sentence = "left " + CONSTANT_DISTANCE;
+	  	  	    sendData = sentence.getBytes();
+	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
+	  	  	    clientSocket.send(sendPacket);
+	            break;
+	        case '6': //right 
+	        	System.out.println("right " + CONSTANT_DISTANCE);
+	  	  		sentence = "right " + CONSTANT_DISTANCE;
+	  	  	    sendData = sentence.getBytes();
+	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
+	  	  	    clientSocket.send(sendPacket);
+	            break;
+	        case '5': //land
+	        	System.out.println("land");
+	  	  		sentence = "land";
+	  	  	    sendData = sentence.getBytes();
+	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
+	  	  	    clientSocket.send(sendPacket);
+	            break;
+	        }
+  	  	    
+  	  	    
+  	     }    
+  	     
+  	     clientSocket.close();
+  	
+  	    
+  	    
+    	 	 
+ 	   
+
+    }
+    
+    /* Unravels stack and generates a string of directional numbers. 
+     			1 = NW
+     			2 = N
+     			3 = NE
+     			4 = W
+     			6 = E
+     			7 = SW
+     			8 = S
+     			9 = SE
+   */
+    
+    public String generateStringFromStack() {
+    	CellObject prevObject = intStack.pop();
+		CellObject currentObject = intStack.pop();
+    	String toReturn = "";
+    	
+    	while(!intStack.isEmpty()) {
+    		if(currentObject.row == prevObject.row + 1 && currentObject.col == prevObject.col + 1) {
+    	    	toReturn = "1"+toReturn;
+    		}else if(currentObject.row == prevObject.row + 1 && currentObject.col == prevObject.col) {
+    	    	toReturn = "2"+toReturn;
+    		}else if(currentObject.row == prevObject.row + 1 && currentObject.col == prevObject.col - 1) {
+    	    	toReturn = "3"+toReturn;
+    		}else if(currentObject.row == prevObject.row && currentObject.col == prevObject.col + 1) {
+    	    	toReturn = "4"+toReturn;
+    		}else if(currentObject.row == prevObject.row && currentObject.col == prevObject.col - 1) {
+    	    	toReturn = "6"+toReturn;
+    		}else if(currentObject.row == prevObject.row - 1 && currentObject.col == prevObject.col) {
+    	    	toReturn = "8"+toReturn;
+    		}else if(currentObject.row == prevObject.row - 1 && currentObject.col == prevObject.col + 1) {
+    	    	toReturn = "7"+toReturn;
+    		}else if(currentObject.row == prevObject.row - 1 && currentObject.col == prevObject.col - 1) {
+    	    	toReturn = "9"+toReturn;
+    		}
+    		prevObject = currentObject;
+    		currentObject = intStack.pop();
+    	}
+    	
+    	return "0"+toReturn+"5"; //Return with takeoff and land signals 
+    }
+	  
     
     public class CellObject {
     	private int row; 
@@ -98,7 +226,16 @@ public class main {
     	public String toString() {
     		return "Row: " + row + ", Column: " + col;
     	}
+    	
+    	public String calculateDirection(CellObject cell) {
+    		return "";
+    	}
     }
+    int centerRow = (int)(GRID_SIZE/2);
+    int centerCol = (int)(GRID_SIZE/2);
+    int prevRow = (int)(GRID_SIZE/2);
+    int prevCol = (int)(GRID_SIZE/2); 
+    boolean prevValid = true; 
     
     public class CellPane extends JPanel {
 
@@ -106,15 +243,24 @@ public class main {
         private boolean selected = false;
 
         public CellPane(int row, int col) {
+        	 if(row == centerRow && col == centerCol) {
+        		 setBackground(Color.green);
+        	 }
         	 addMouseListener(new MouseAdapter() {
                  @Override
                  public void mouseClicked(MouseEvent e) {
-                    selected = !selected; 
-                    if(selected) {
-                    	intStack.push(new CellObject(row, col));
-                    }else {
-                    	System.out.println(intStack.pop());
-                    }
+                	 if(isValidSelection(row, col)) {
+                		 selected = !selected; 
+                         if(selected) {
+                         	intStack.push(new CellObject(row, col));
+                         	prevRow = row;
+                         	prevCol = col;
+                         }else {
+                         	System.out.println(intStack.pop());
+                         	prevValid = false;
+                         }
+                	 }
+                    
                  }
              });
             addMouseListener(new MouseAdapter() {
@@ -125,13 +271,30 @@ public class main {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                	if(selected) {
+                	if(row == centerRow && col == centerCol) {
+                		setBackground(Color.green);
+               	 	}else if(selected) {
                 		setBackground(Color.BLUE);
                 	}else {
                 		setBackground(defaultBackground);
                 	}
                 }
             });
+        }
+        
+
+        public boolean isValidSelection(int row, int col) {
+        	return (
+        			(row == prevRow && col == prevCol) ||// Only let same square selected if previous was invalid
+        			(row == prevRow && col == prevCol + 1) ||
+        			(row == prevRow && col == prevCol - 1) ||
+        			(row == prevRow + 1 && col == prevCol) ||
+        			(row == prevRow + 1 && col == prevCol + 1) ||
+        			(row == prevRow + 1 && col == prevCol - 1) ||
+        			(row == prevRow - 1 && col == prevCol) ||
+        			(row == prevRow - 1 && col == prevCol + 1) ||
+        			(row == prevRow - 1 && col == prevCol - 1) 
+        			);
         }
 
         @Override
