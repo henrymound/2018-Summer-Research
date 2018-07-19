@@ -1,20 +1,13 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.util.*;
 
 public class main {
-
+	
+	int GRID_SIZE = 21;
+	
     public static void main(String[] args) {
         new main();
     }
@@ -28,10 +21,19 @@ public class main {
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 }
 
-                JFrame frame = new JFrame("Testing");
+                JFrame frame = new JFrame("Tello Flight Path Planner");
+                JButton deployCodeButton = new JButton("Deploy Flight");
+                deployCodeButton.addActionListener(new ActionListener() { 
+                	
+                	  public void actionPerformed(ActionEvent e) { 
+                		    deployCodeButtonPressed();
+                		  } 
+                		} 
+                );
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
                 frame.add(new TestPane());
+                frame.add(deployCodeButton, BorderLayout.SOUTH);
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -39,30 +41,39 @@ public class main {
         });
     }
 
-    public class TestPane extends JPanel {
+    public void deployCodeButtonPressed() {
+    	 System.out.println("DEPLOYING CODE");
 
+    }
+	  
+
+    public class TestPane extends JPanel {
+    	
+    	
         public TestPane() {
             setLayout(new GridBagLayout());
 
             GridBagConstraints gbc = new GridBagConstraints();
-            for (int row = 0; row < 15; row++) {
-                for (int col = 0; col < 15; col++) {
+            for (int row = 0; row < GRID_SIZE; row++) {
+                for (int col = 0; col < GRID_SIZE; col++) {
                     gbc.gridx = col;
                     gbc.gridy = row;
 
-                    CellPane cellPane = new CellPane();
+                    CellPane cellPane = new CellPane(row, col);
                     Border border = null;
-                    if (row < 14) {
-                        if (col < 14) {
+                    if (row < GRID_SIZE - 1) {
+                        if (col < GRID_SIZE - 1) {
                             border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
                         } else {
                             border = new MatteBorder(1, 1, 0, 1, Color.GRAY);
                         }
                     } else {
-                        if (col < 14) {
+                        if (col < GRID_SIZE - 1) {
+                        	// For the last row
                             border = new MatteBorder(1, 1, 1, 0, Color.GRAY);
                         } else {
-                            border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
+                            // For the bottom right corner
+                        	border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
                         }
                     }
                     cellPane.setBorder(border);
@@ -72,28 +83,60 @@ public class main {
         }
     }
 
+    Deque<CellPane> cellStack = new ArrayDeque<CellPane>();
+    Deque<CellObject> intStack = new ArrayDeque<CellObject>();
+    
+    public class CellObject {
+    	private int row; 
+    	private int col;
+    	
+    	public CellObject(int Row, int Col) {
+    		row = Row;
+    		col = Col;
+    	}
+    	
+    	public String toString() {
+    		return "Row: " + row + ", Column: " + col;
+    	}
+    }
+    
     public class CellPane extends JPanel {
 
-        private Color defaultBackground;
+        private Color defaultBackground = getBackground();
+        private boolean selected = false;
 
-        public CellPane() {
+        public CellPane(int row, int col) {
+        	 addMouseListener(new MouseAdapter() {
+                 @Override
+                 public void mouseClicked(MouseEvent e) {
+                    selected = !selected; 
+                    if(selected) {
+                    	intStack.push(new CellObject(row, col));
+                    }else {
+                    	System.out.println(intStack.pop());
+                    }
+                 }
+             });
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    defaultBackground = getBackground();
-                    setBackground(Color.BLUE);
+                    setBackground(Color.RED);
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    setBackground(defaultBackground);
+                	if(selected) {
+                		setBackground(Color.BLUE);
+                	}else {
+                		setBackground(defaultBackground);
+                	}
                 }
             });
         }
 
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(50, 50);
+            return new Dimension(30, 30);
         }
     }
 }
