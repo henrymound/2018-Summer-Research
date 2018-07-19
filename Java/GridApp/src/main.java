@@ -3,10 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
-import java.io.*;
 import java.net.*;
-import java.nio.charset.*;
-import java.util.Scanner;
 
 public class main {
 	
@@ -28,7 +25,6 @@ public class main {
 
                 JFrame frame = new JFrame("Tello Flight Path Planner");
                 JButton deployCodeButton = new JButton("Deploy Flight");
-                JButton startFlightButton = new JButton("Start Flight");
                 deployCodeButton.addActionListener(new ActionListener() { 
               	  public void actionPerformed(ActionEvent e) { 
               		    try {
@@ -44,7 +40,6 @@ public class main {
                 frame.setLayout(new BorderLayout());
                 frame.add(new TestPane(), BorderLayout.NORTH);
                 frame.add(deployCodeButton, BorderLayout.CENTER);
-                frame.add(startFlightButton, BorderLayout.SOUTH);
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -241,8 +236,11 @@ public class main {
 
         private Color defaultBackground = getBackground();
         private boolean selected = false;
+        //private JTextField verticleTextField = new JTextField(3);
+        
 
         public CellPane(int row, int col) {
+        	 add(verticleTextField);
         	 if(row == centerRow && col == centerCol) {
         		 setBackground(Color.green);
         	 }
