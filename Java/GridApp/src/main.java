@@ -7,7 +7,7 @@ import java.net.*;
 
 public class main {
 	
-	int GRID_SIZE = 21;
+	int GRID_SIZE = 50;
 	
     public static void main(String[] args) {
        
@@ -103,7 +103,7 @@ public class main {
   	     byte[] receiveData = new byte[256];
   	      	  
   	     for (char ch: instructionString.toCharArray()) {  		 
-   	  	    Thread.sleep(2000);
+   	  	    Thread.sleep(1500);
   	        String sentence = "command";
   	  		System.out.println("command");
   	  	    sendData = sentence.getBytes();
@@ -236,11 +236,11 @@ public class main {
 
         private Color defaultBackground = getBackground();
         private boolean selected = false;
-        //private JTextField verticleTextField = new JTextField(3);
+        private JTextField verticleTextField = new JTextField(3);
         
 
         public CellPane(int row, int col) {
-        	 add(verticleTextField);
+        	 //add(verticleTextField);
         	 if(row == centerRow && col == centerCol) {
         		 setBackground(Color.green);
         	 }
@@ -297,7 +297,7 @@ public class main {
 
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(30, 30);
+            return new Dimension(15, 15);
         }
     }
 }
