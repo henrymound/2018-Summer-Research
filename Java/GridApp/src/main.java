@@ -86,7 +86,7 @@ public class main {
 
     Deque<CellPane> cellStack = new ArrayDeque<CellPane>();
     Deque<CellObject> intStack = new ArrayDeque<CellObject>();
-    int CONSTANT_DISTANCE = 50;
+    int CONSTANT_DISTANCE = 15;
     
     public void deployCodeButtonPressed() throws Exception {
     	
@@ -97,13 +97,14 @@ public class main {
     	 
     	 DatagramSocket clientSocket = new DatagramSocket();
   	     InetAddress IPAddress = InetAddress.getByName("192.168.10.1"); 
-  	     System.out.println("Connected to Tello");
   		  
   	     byte[] sendData = null;
   	     byte[] receiveData = new byte[256];
+  	     
+  	     System.out.println("Connected to Tello");
   	      	  
   	     for (char ch: instructionString.toCharArray()) {  		 
-   	  	    Thread.sleep(1500);
+   	  	    Thread.sleep(3000);
   	        String sentence = "command";
   	  		System.out.println("command");
   	  	    sendData = sentence.getBytes();
