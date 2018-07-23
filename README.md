@@ -5,11 +5,11 @@ The team is working with various hardware configurations and computer vision pla
 
 |                               | C# | Python | Go | Java |
 |-------------------------------|----|--------|----|------|
-| Uncompressed Video Stream     | ✓  | ✗      | ✓  | ✗    |
-| Facial Tracking               | ✘  | ✗      | ✓  | ✗    |
-| Optical Flow & Edge Detection | ✗  | ✓      | ✗  | ✗    |
-| Multiple Tello Control        | ✗  | ✓      | ✗  | ✓    |
-| Game Controller Support       | ✓  | ✓      | ✓  | ✗    |
+| Uncompressed Video Stream     | ✓  | ✘      | ✓  | ✘    |
+| Facial Tracking               | ✘  | ✘      | ✓  | ✘    |
+| Optical Flow & Edge Detection | ✘  | ✓      | ✘  | ✘    |
+| Multiple Tello Control        | ✘  | ✓      | ✗  | ✓    |
+| Game Controller Support       | ✓  | ✓      | ✓  | ✘    |
 
 ## Tello Swarm
 Check out [Adventures with DJI Ryze Tello: Controlling a Tello Swarm](https://medium.com/@henrymound/adventures-with-dji-ryze-tello-controlling-a-tello-swarm-1bce7d4e045d)
