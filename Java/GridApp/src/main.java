@@ -119,16 +119,16 @@ public class main {
 	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
 	  	  	    clientSocket.send(sendPacket);
 	            break;
-	        case '2': //forward 
-	        	System.out.println("forward " + CONSTANT_DISTANCE);
-	  	  		sentence = "forward " + CONSTANT_DISTANCE;
+	        case '2': //up 
+	        	System.out.println("up " + CONSTANT_DISTANCE);
+	  	  		sentence = "up " + CONSTANT_DISTANCE;
 	  	  	    sendData = sentence.getBytes();
 	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
 	  	  	    clientSocket.send(sendPacket);
 	            break;
-	        case '8': //backward 
-	        	System.out.println("back " + CONSTANT_DISTANCE);
-	  	  		sentence = "back " + CONSTANT_DISTANCE;
+	        case '8': //down 
+	        	System.out.println("down " + CONSTANT_DISTANCE);
+	  	  		sentence = "down " + CONSTANT_DISTANCE;
 	  	  	    sendData = sentence.getBytes();
 	  	  	    sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 8889);
 	  	  	    clientSocket.send(sendPacket);
